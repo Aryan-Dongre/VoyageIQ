@@ -1,0 +1,190 @@
+{% extends "dashboard/base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/weather/dashboard_weather.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ===================== HERO ===================== -->
+<section class="vq-hero vq-hero--weather">
+  <div class="container">
+    <div class="vq-hero-content">
+      <span class="vq-eyebrow">Weather Intelligence</span>
+      <h1 class="vq-hero-title">Know the weather before you travel.</h1>
+      <p class="vq-hero-subtitle">
+        Get current conditions, 5-day forecasts, and travel recommendations
+        powered by real-time weather intelligence.
+      </p>
+    </div>
+
+    <!-- ===================== SEARCH CARD ===================== -->
+    <div class="vq-search-card">
+      <form method="POST" action="{{ url_for('dashboard.weather') }}" class="vq-search-form" id="vq-weather-search-form"
+        novalidate>
+        {{ form.hidden_tag() }}
+
+        <div class="row g-3 align-items-end">
+
+          <div class="col-12 col-lg-9 vq-field vq-field--destination">
+            <label class="vq-label" for="{{ form.destination.id }}">
+              <i class="fa-solid fa-location-dot"></i>
+              Destination
+            </label>
+            {{ form.destination(class_="vq-input", placeholder="Enter city or destination", autocomplete="off") }}
+          </div>
+
+          <div class="col-12 col-lg-3 vq-field vq-field--submit">
+            {{ form.submit(class_="vq-btn vq-btn--primary vq-btn--block", id="vq-search-submit") }}
+          </div>
+
+        </div>
+      </form>
+    </div>
+    <!-- ===================== /SEARCH CARD ===================== -->
+
+  </div>
+</section>
+
+<!-- ===================== RESULTS ===================== -->
+<section class="vq-results" id="vq-weather-results">
+  <div class="container">
+
+    {% if weather_results %}
+    <div class="vq-results-header">
+      <h2 class="vq-results-title">Weather intelligence for {{ weather_results.current_weather.destination }}</h2>
+      <p class="vq-results-subtitle">Current conditions, forecast, and recommendations &middot; updated in real time</p>
+    </div>
+
+    <!-- ===================== CURRENT WEATHER CARD ===================== -->
+    <div class="vq-weather-current">
+
+      <div class="vq-weather-current-main">
+
+        <div class="vq-weather-icon">
+          <i class="{{ weather_results.current_weather.weather_icon }}"></i>
+        </div>
+
+        <div class="vq-weather-heading">
+          <h3 class="vq-weather-destination">
+            {{ weather_results.current_weather.destination }}
+          </h3>
+          <p class="vq-weather-country">
+            📍 {{ weather_results.current_weather.country }}
+          </p>
+          <p class="vq-weather-condition">
+            {{ weather_results.current_weather.weather_condition }}
+          </p>
+        </div>
+
+        <div class="vq-weather-temp-block">
+          <span class="vq-weather-temp">{{ weather_results.current_weather.temperature }}&deg;C</span>
+          <span class="vq-weather-feels-like">Feels like {{ weather_results.current_weather.feels_like }}&deg;C</span>
+        </div>
+
+      </div>
+
+      <div class="vq-weather-details">
+
+        <div class="vq-weather-detail">
+          <i class="fa-solid fa-droplet"></i>
+          <span class="vq-weather-detail-label">Humidity</span>
+          <span class="vq-weather-detail-value">{{ weather_results.current_weather.humidity }}%</span>
+        </div>
+
+        <div class="vq-weather-detail">
+          <i class="fa-solid fa-wind"></i>
+          <span class="vq-weather-detail-label">Wind Speed</span>
+          <span class="vq-weather-detail-value">{{ weather_results.current_weather.wind_speed }} km/h</span>
+        </div>
+
+        <div class="vq-weather-detail">
+          <i class="fa-solid fa-eye"></i>
+          <span class="vq-weather-detail-label">Visibility</span>
+          <span class="vq-weather-detail-value">{{ "%.1f"|format(weather_results.current_weather.visibility / 1000) }} km</span>
+        </div>
+
+      </div>
+
+    </div>
+    <!-- ===================== /CURRENT WEATHER CARD ===================== -->
+
+    <!-- ===================== TRAVEL RECOMMENDATIONS ===================== -->
+    <div class="vq-recommendations">
+
+      <h3 class="vq-recommendations-title">Travel Recommendations</h3>
+
+      <div class="vq-recommendation-card">
+        {% for recommendation in weather_results.recommendations %}
+        <div class="vq-recommendation-item">
+          <i class="fa-solid fa-circle-check"></i>
+          <span>{{ recommendation }}</span>
+        </div>
+        {% endfor %}
+      </div>
+
+    </div>
+    <!-- ===================== /TRAVEL RECOMMENDATIONS ===================== -->
+
+    <!-- ===================== 5-DAY FORECAST ===================== -->
+    <div class="vq-forecast">
+
+      <h3 class="vq-forecast-title">5-Day Forecast</h3>
+
+      <div class="vq-forecast-grid" id="vq-forecast-grid">
+        {% for forecast in weather_results.forecast %}
+        <article class="vq-forecast-card" data-index="{{ loop.index }}">
+
+          <p class="vq-forecast-date">{{ forecast.forecast_date }}</p>
+
+          <div class="vq-forecast-temps">
+            <span class="vq-forecast-temp-max">{{ forecast.temp_max }}&deg;</span>
+            <span class="vq-forecast-temp-min">{{ forecast.temp_min }}&deg;</span>
+          </div>
+
+          <div class="vq-forecast-rain">
+            <i class="fa-solid fa-cloud-rain"></i>
+            <span>{{ forecast.rain_percent }}%</span>
+          </div>
+
+          {% if forecast.rain_percent >= 70 %}
+          <span class="vq-badge vq-badge--high">High Rain</span>
+          {% elif forecast.rain_percent >= 40 %}
+          <span class="vq-badge vq-badge--moderate">Moderate Rain</span>
+          {% else %}
+          <span class="vq-badge vq-badge--low">Low Rain</span>
+          {% endif %}
+
+        </article>
+        {% endfor %}
+      </div>
+
+    </div>
+    <!-- ===================== /5-DAY FORECAST ===================== -->
+
+    {% else %}
+    <!-- ===================== EMPTY STATE ===================== -->
+    <div class="vq-empty-state">
+      <div class="vq-empty-icon">
+        <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M17.5 19a4.5 4.5 0 0 0 0-9 6 6 0 0 0-11.6 1.5"></path>
+          <path d="M5.5 19a3.5 3.5 0 0 1 0-7"></path>
+          <path d="M9 21v.01M12 21v.01M15 21v.01"></path>
+        </svg>
+      </div>
+      <h3 class="vq-empty-title">Search a destination to view weather intelligence.</h3>
+      <p class="vq-empty-text">
+        Enter any city and get real-time weather conditions, forecasts, and
+        travel recommendations before planning your trip.
+      </p>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/weather/weather.js') }}"></script>
+{% endblock %}
+
+{% endblock %}

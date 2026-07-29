@@ -1,0 +1,217 @@
+{% extends "public/base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/hotel/hotel.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ===================== HERO ===================== -->
+<section class="vq-hero vq-hero--hotel">
+  <div class="container">
+    <div class="vq-hero-content">
+      <span class="vq-eyebrow">Hotel Intelligence</span>
+      <h1 class="vq-hero-title">Stay smarter, not just cheaper.</h1>
+      <p class="vq-hero-subtitle">
+        Compare real prices, real reviews, and real value across thousands of
+        hotels &mdash; so every stay is backed by data, not guesswork.
+      </p>
+    </div>
+
+    <!-- ===================== SEARCH CARD ===================== -->
+    <div class="vq-search-card">
+      <form method="POST" action="{{ url_for('hotel.hotel_search') }}" class="vq-search-form" id="vq-hotel-search-form"
+        novalidate>
+        {{ form.hidden_tag() }}
+
+        <div class="row g-3 align-items-end">
+
+          <div class="col-12 col-lg-4 vq-field vq-field--destination">
+            <label class="vq-label" for="destination-input">
+              <i class="fa-solid fa-location-dot"></i>
+              Destination
+            </label>
+            <div class="vq-autocomplete">
+              {{ form.destination(class_="vq-input", id="destination-input", placeholder="City, region, or hotel",
+              autocomplete="off") }}
+              <div id="destination-suggestions" class="vq-suggestions vq-hidden"></div>
+            </div>
+          </div>
+
+          <div class="col-6 col-lg-2 vq-field">
+            <label class="vq-label" for="{{ form.check_in_date.id }}">Check-in</label>
+            {{ form.check_in_date(class_="vq-input", placeholder="Check-in") }}
+          </div>
+
+          <div class="col-6 col-lg-2 vq-field">
+            <label class="vq-label" for="{{ form.check_out_date.id }}">Check-out</label>
+            {{ form.check_out_date(class_="vq-input", placeholder="Check-out") }}
+          </div>
+
+          <div class="col-6 col-lg-1 vq-field">
+            <label class="vq-label" for="{{ form.adults.id }}"> <i class="fa-solid fa-user-group"></i>
+              Adults
+            </label>
+            {{ form.adults(class_="vq-input") }}
+          </div>
+
+          <div class="col-6 col-lg-1 vq-field">
+            <label class="vq-label" for="{{ form.rooms.id }}"> <i class="fa-solid fa-bed"></i>
+              Rooms
+            </label>
+            {{ form.rooms(class_="vq-input") }}
+          </div>
+
+          <div class="col-12 col-lg-2 vq-field vq-field--submit">
+            {{ form.submit(class_="vq-btn vq-btn--primary vq-btn--block", id="vq-search-submit") }}
+          </div>
+
+        </div>
+      </form>
+    </div>
+    <!-- ===================== /SEARCH CARD ===================== -->
+
+  </div>
+</section>
+
+<!-- ===================== RESULTS ===================== -->
+<section class="vq-results">
+  <div class="container">
+
+    {% if hotels %}
+    <div class="vq-results-header">
+      <h2 class="vq-results-title">Hotels matched to your search</h2>
+      <p class="vq-results-subtitle">{{ hotels|length }} stays found &middot; ranked by overall value</p>
+    </div>
+
+    <div class="vq-hotel-list" id="vq-hotel-list">
+      {% for hotel in hotels %}
+      <article class="vq-hotel-card {% if loop.index > 5 %}vq-hidden{% endif %}" data-index="{{ loop.index }}">
+
+        <div class="vq-hotel-image">
+
+          <img src="{{ hotel.hotel_image }}" alt="{{ hotel.hotel_name }}" loading="lazy">
+
+          {% if hotel.star_rating %}
+          <span class="vq-star-badge">
+            {{ hotel.star_rating }}★
+          </span>
+          {% endif %}
+
+        </div>
+
+        <div class="vq-hotel-body">
+
+          <div class="vq-hotel-main">
+
+            <div class="vq-hotel-heading">
+
+              <h3 class="vq-hotel-name">
+                {{ hotel.hotel_name }}
+              </h3>
+
+              <p class="vq-hotel-location">
+                📍 {{ hotel.location or "Location unavailable" }}
+              </p>
+
+            </div>
+
+            <p class="vq-hotel-room-type">
+              {{ hotel.room_type|title }}
+            </p>
+
+            {% if hotel.amenities %}
+            <p class="vq-hotel-amenities">
+              {{ hotel.amenities }}
+            </p>
+            {% endif %}
+
+          </div>
+
+          <div class="vq-hotel-side">
+
+            <div class="vq-review">
+
+              <span class="vq-review-score">
+                {{ hotel.review_score or hotel.star_rating }}
+              </span>
+
+              <div class="vq-review-meta">
+
+                <span class="vq-review-label">
+                  Excellent
+                </span>
+
+                <span class="vq-review-count">
+                  {{ hotel.review_count }} reviews
+                </span>
+
+              </div>
+
+            </div>
+
+            <div class="vq-price-block">
+
+              <span class="vq-price-label">
+                Per night
+              </span>
+
+              <span class="vq-price">
+                {% if hotel.price_per_night %}
+                ₹{{ "{:,.0f}".format(hotel.price_per_night) }}
+                {% else %}
+                Price unavailable
+                {% endif %}
+              </span>
+
+            </div>
+
+            <button type="button" class="vq-btn vq-btn--secondary vq-btn--block">
+
+              View Deal
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+      {% endfor %}
+    </div>
+
+    {% if hotels|length > 5 %}
+    <div class="vq-view-more-wrap">
+      <button type="button" id="vq-view-more" class="vq-btn vq-btn--outline">
+        View more hotels
+      </button>
+    </div>
+    {% endif %}
+
+    {% else %}
+    <!-- ===================== EMPTY STATE ===================== -->
+    <div class="vq-empty-state">
+      <div class="vq-empty-icon">
+        <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M3 21h18"></path>
+          <path d="M5 21V7l7-4 7 4v14"></path>
+          <path d="M9 21v-6h6v6"></path>
+          <path d="M9 11h.01M15 11h.01M9 7h.01M15 7h.01"></path>
+        </svg>
+      </div>
+      <h3 class="vq-empty-title">No hotels found for those dates.</h3>
+      <p class="vq-empty-text">
+        Try adjusting your check-in or check-out dates, widening your destination,
+        or reducing the number of rooms &mdash; we'll keep looking for the best data-backed stays.
+      </p>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/hotel/hotel.js') }}"></script>
+{% endblock %}
+
+{% endblock %}

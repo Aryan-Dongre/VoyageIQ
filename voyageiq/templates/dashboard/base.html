@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}VoyageIQ Dashboard{% endblock %}</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/base.css') }}">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+    <div class="dashboard-wrapper">
+
+        <!-- ================= Sidebar ================= -->
+
+        <!-- ================= Sidebar ================= -->
+        <aside class="sidebar">
+
+            <!-- Brand Section -->
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-mark" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 7.4 13.6 10 11 17.6l-1.5-5.1L4.4 11 2 9.5l9-3.1L13.5 2 14 5.6l7 1.8Z"
+                            fill="currentColor" />
+                    </svg>
+                </div>
+                <div class="sidebar-brand-text">
+                    <h3 class="sidebar-brand-name">VoyageIQ</h3>
+                    <p class="sidebar-brand-subtitle">Travel Dashboard</p>
+                </div>
+            </div>
+
+            <!-- Main Navigation -->
+            <nav class="sidebar-navigation">
+                <span class="sidebar-nav-label">Menu</span>
+
+                <a href="{{ url_for('dashboard.dashboard') }}"
+                    class="sidebar-nav-link dashboard-link {% if request.endpoint == 'dashboard.dashboard' %}active{% endif %}">
+                    <i class="fa-solid fa-house sidebar-nav-icon"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="{{ url_for('target_trip.target_trip_home') }}"
+                    class="sidebar-nav-link target-link {% if request.endpoint == 'target_trip.target_trip_home' %}active{% endif %}">
+                    <i class="fa-solid fa-bullseye sidebar-nav-icon"></i>
+                    <span>Target Trip</span>
+                </a>
+
+                <a href="{{ url_for('dashboard.flight') }}"
+                    class="sidebar-nav-link flight-link {% if request.endpoint == 'dashboard.flight' %}active{% endif %}">
+                    <i class="fa-solid fa-plane-departure sidebar-nav-icon"></i>
+                    <span>Flights</span>
+                </a>
+
+                <a href="{{ url_for('dashboard.hotel') }}"
+                    class="sidebar-nav-link hotel-link {% if request.endpoint == 'dashboard.hotel' %}active{% endif %}">
+                    <i class="fa-solid fa-hotel sidebar-nav-icon"></i>
+                    <span>Hotels</span>
+                </a>
+
+                <a href="{{ url_for('dashboard.weather') }}"
+                    class="sidebar-nav-link weather-link {% if request.endpoint == 'dashboard.weather' %}active{% endif %}">
+                    <i class="fa-solid fa-cloud-sun sidebar-nav-icon"></i>
+                    <span>Weather</span>
+                </a>
+            </nav>
+
+            <!-- Utility Navigation -->
+            <nav class="sidebar-utility-navigation">
+                <span class="sidebar-nav-label">Account</span>
+
+                <a href="{{ url_for('profile.profile') }}"
+                    class="sidebar-nav-link profile-link {% if request.endpoint == 'profile.profile' %}active{% endif %}">
+                    <i class="fa-solid fa-user sidebar-nav-icon"></i>
+                    <span>Profile</span>
+                </a>
+
+                <a href="#"
+                    class="sidebar-nav-link settings-link {% if request.endpoint == 'settings.settings' %}active{% endif %}">
+                    <i class="fa-solid fa-gear sidebar-nav-icon"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <!-- Logout Section -->
+            <div class="sidebar-footer">
+                <a href="{{ url_for('auth.logout') }}" class="sidebar-logout">
+                    <i class="fa-solid fa-right-from-bracket sidebar-nav-icon"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+
+        </aside>
+
+        <!-- ================= Main Content ================= -->
+
+        <main class="main-content">
+
+            {% block content %}
+            {% endblock %}
+
+        </main>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+    {% block extra_js %}{% endblock %}
+
+</body>
+
+</html>

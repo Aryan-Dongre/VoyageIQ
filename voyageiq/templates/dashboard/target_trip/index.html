@@ -1,0 +1,287 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Target Trip{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/target_trip/index.css') }}">
+
+<div class="tt-page">
+
+    <!-- Header Section -->
+    <div class="tt-header">
+        <div class="tt-header-text">
+            <h1 class="tt-title">Target Trip</h1>
+            <p class="tt-subtitle">Save your travel goals and quickly find matching flights and hotels when you're
+                ready.</p>
+        </div>
+        <div class="tt-header-actions">
+            <a href="{{url_for('target_trip.create_target_trip')}}" class="tt-btn tt-btn-primary">
+                <span class="tt-btn-icon">+</span> Create New Target Trip
+            </a>
+        </div>
+    </div>
+
+    <!-- My Target Trips Section -->
+    <div class="tt-section">
+        <h2 class="tt-section-title">My Target Trips</h2>
+
+        <div class="tt-grid">
+            {% if target_trips %}
+            {% for trip in target_trips %}
+
+            <!-- Card -->
+            <div class="tt-card">
+                <div class="tt-card-banner">
+                    <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=600&h=300&fit=crop"
+                        alt="{{ trip.destination }}">
+                    <span class="tt-status-badge tt-status-active">
+                        {{ trip.status }}
+                    </span>
+                </div>
+
+                <div class="tt-card-body">
+
+                    <h3 class="tt-destination">
+                        {{ trip.destination }}
+                    </h3>
+
+                    <p class="tt-route">
+                        {{ trip.origin }} &rarr; {{ trip.destination }}
+                    </p>
+
+                    <div class="tt-meta-row">
+                        <span class="tt-meta-item">
+                            <svg class="tt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" />
+                                <line x1="16" y1="2" x2="16" y2="6" />
+                                <line x1="8" y1="2" x2="8" y2="6" />
+                                <line x1="3" y1="10" x2="21" y2="10" />
+                            </svg>
+
+                            {{ trip.start_month }}
+                            -
+                            {{ trip.end_month }}
+                            {{ trip.travel_year }}
+                        </span>
+
+                        <span class="tt-meta-item">
+                            <svg class="tt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M2 22l10-10M12 12l9-9-3-1-6 6M12 12l-3 8 8-3" />
+                            </svg>
+                            {{ trip.travel_class }}
+                        </span>
+
+                        <span class="tt-meta-item">
+                            <svg class="tt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                            </svg>
+                            {{ trip.travelers }}
+                        </span>
+                    </div>
+
+                    <div class="tt-budget-grid">
+
+                        <div class="tt-budget-item">
+                            <span class="tt-budget-label">
+                                Flight Budget
+                            </span>
+
+                            <span class="tt-budget-value">
+                                ₹{{ "{:,.0f}".format(trip.flight_min_price) }}
+                                -
+                                ₹{{ "{:,.0f}".format(trip.flight_max_price) }}
+                            </span>
+                        </div>
+
+                        <div class="tt-budget-item">
+                            <span class="tt-budget-label">
+                                Hotel Budget
+                            </span>
+
+                            <span class="tt-budget-value">
+                                ₹{{ "{:,.0f}".format(trip.hotel_min_price)}}
+                                -
+                                ₹{{ "{:,.0f}".format(trip.hotel_max_price )}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="tt-card-footer">
+                        <span class="tt-last-checked">
+                            Last Checked:
+                            <span>Never</span>
+                        </span>
+                    </div>
+
+                    <div class="tt-card-actions">
+                        <a href="{{ url_for('target_trip.find_matches', target_trip_id=trip.target_trip_id ) }}"
+                            class="tt-btn tt-btn-primary tt-btn-block">
+                            Find Match
+                        </a>
+
+                        <a href="{{ url_for('target_trip.edit_target_trip', target_trip_id=trip.target_trip_id) }}"
+                            class="tt-btn tt-btn-outline">
+                            Edit
+                        </a>
+
+                        <form method="POST"
+                            action="{{ url_for('target_trip.delete_target_trip', target_trip_id=trip.target_trip_id )}}">
+                            <button type="submit" class="tt-btn tt-btn-danger">
+                                Delete
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+            {% if matches and selected_trip_id == trip.target_trip_id %}
+
+            <div class="tt-match-results">
+
+                <div class="tt-match-header">
+
+                    <h3>
+                        Match Results For {{ trip.destination }}
+                    </h3>
+
+                    <a href="{{ url_for('target_trip.target_trip_home') }}" class="tt-close-btn">
+                        ✕
+                    </a>
+
+                </div>
+
+                <section class="vq-match-results">
+
+                    <div class="vq-match-header">
+                        <h2 class="vq-match-title">Match Results For {{ trip.destination }}</h2>
+
+                        <div class="vq-stat-chips">
+                            <span class="vq-chip">
+                                <span class="vq-chip-icon">✈</span>
+                                Flights Found
+                                <strong>{{ matches.flights|length }}</strong>
+                            </span>
+                            <span class="vq-chip">
+                                <span class="vq-chip-icon">🏨</span>
+                                Hotels Found
+                                <strong>{{ matches.hotels|length }}</strong>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- ============ FLIGHT RESULTS ============ -->
+                    <div class="vq-card-group">
+                        {% for flight in matches.flights %}
+                        <article class="vq-card vq-flight-card">
+
+                            <div class="vq-card-left">
+                                <div class="vq-airline">{{ flight.airline }}</div>
+                                <div class="vq-route">
+                                    <span>{{ flight.departure_city }}</span>
+                                    <span class="vq-route-arrow">→</span>
+                                    <span>{{ flight.arrival_city }}</span>
+                                </div>
+                                <div class="vq-meta-row">
+                                    {{ flight.cabin_class }} <span class="vq-dot">•</span> {{ flight.duration_minutes }}
+                                    min
+                                </div>
+                            </div>
+
+                            <div class="vq-card-right">
+                                <div class="vq-price">
+                                    {% if flight.price %}
+                                    ₹{{ "{:,.0f}".format(flight.price) }}
+                                    {% else %}
+                                    Price Not Available
+                                    {% endif %}
+                                </div>
+
+                                {% if flight.match_status == "perfect_match" %}
+                                <span class="vq-badge vq-badge-perfect">Perfect Match</span>
+                                {% elif flight.match_status == "close_match" %}
+                                <span class="vq-badge vq-badge-close">Close Match</span>
+                                {% else %}
+                                <span class="vq-badge vq-badge-above">Above Budget</span>
+                                {% endif %}
+                            </div>
+
+                        </article>
+                        {% endfor %}
+                    </div>
+
+                    <!-- ============ HOTEL RESULTS ============ -->
+                    <div class="vq-card-group">
+                        {% for hotel in matches.hotels %}
+                        <article class="vq-card vq-hotel-card">
+
+                            <div class="vq-card-left">
+                                <div class="vq-hotel-name">{{ hotel.hotel_name }}</div>
+                                <div class="vq-location">{{ hotel.location }}</div>
+                            </div>
+
+                            <div class="vq-card-middle">
+                                <div class="vq-rating">⭐ {{ hotel.star_rating or "N/A" }}</div>
+                                <div class="vq-room-type">{{ hotel.room_type }}</div>
+                            </div>
+
+                            <div class="vq-card-right">
+                                <div class="vq-price">
+                                    {% if hotel.price_per_night %}
+                                    ₹{{ "{:,.0f}".format(hotel.price_per_night) }}
+                                    <span class="vq-price-unit">/night</span>
+                                    {% else %}
+                                    Price Not Available
+                                    {% endif %}
+                                </div>
+
+                                {% if hotel.match_status == "perfect_match" %}
+                                <span class="vq-badge vq-badge-perfect">Perfect Match</span>
+                                {% elif hotel.match_status == "close_match" %}
+                                <span class="vq-badge vq-badge-close">Close Match</span>
+                                {% else %}
+                                <span class="vq-badge vq-badge-above">Above Budget</span>
+                                {% endif %}
+                            </div>
+
+                        </article>
+                        {% endfor %}
+                    </div>
+
+                </section>
+
+            </div>
+
+            {% endif %}
+
+
+            {% endfor %}
+
+            {% else %}
+            <div class="tt-empty-state">
+
+                <div class="tt-empty-card">
+
+                    <h3>No Target Trips Yet</h3>
+
+                    <p>
+                        Create your first travel goal to start tracking
+                        future opportunities.
+                    </p>
+
+                    <a href="{{ url_for('target_trip.create_target_trip') }}" class="tt-btn tt-btn-primary">
+                        Create Target Trip
+                    </a>
+
+                </div>
+
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

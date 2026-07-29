@@ -1,0 +1,357 @@
+{% extends 'dashboard/base.html' %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static',
+      filename='css/dashboard/dashboard.css') }}">
+{% endblock %}
+
+
+{% block content %}
+
+<div class="vq-content">
+
+  <!-- ============================================================
+      1. Top Part
+  ============================================================= -->
+
+  <div class="vq-topbar">
+
+    <div class="vq-topbar__left">
+
+      <span class="vq-eyebrow vq-eyebrow--dashboard">
+        <i class="fa-solid fa-compass"></i>
+        Trip Intelligence
+      </span>
+
+    </div>
+
+    <div class="vq-topbar__right">
+
+      <button class="vq-topbar__bell">
+        <i class="fa-regular fa-bell"></i>
+      </button>
+
+      <div class="vq-topbar__user">
+        <i class="fa-regular fa-circle-user"></i>
+
+        <span>
+          Hello, {{ session.username|title }}!
+        </span>
+
+        <i class="fa-solid fa-chevron-down"></i>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ============================================================
+       2. TRIP ANALYZER SEARCH CARD
+  ============================================================= -->
+  <section class="vq-analyzer">
+    <div class="vq-analyzer__card">
+      <div class="vq-analyzer__head">
+        <h2>Trip Analyzer</h2>
+        <p>Enter your route and dates to generate a full trip report.</p>
+      </div>
+
+      <form method="post" class="vq-form">
+        {{ form.hidden_tag() }}
+
+        <div class="vq-form__grid">
+          <div class="vq-field">
+            <label for="{{ form.origin.id }}">Origin</label>
+            {{ form.origin }}
+          </div>
+
+          <div class="vq-field">
+            <label for="{{ form.destination.id }}">Destination</label>
+            {{ form.destination }}
+          </div>
+
+          <div class="vq-field">
+            <label for="{{ form.departure_date.id }}">Departure Date</label>
+            {{ form.departure_date }}
+          </div>
+
+          <div class="vq-field">
+            <label for="{{ form.return_date.id }}">Return Date</label>
+            {{ form.return_date }}
+          </div>
+
+          <div class="vq-field">
+            <label for="{{ form.trip_type.id }}">Trip Type</label>
+            {{ form.trip_type }}
+          </div>
+
+          <div class="vq-field">
+            <label for="{{ form.adults.id }}">Adults</label>
+            {{ form.adults }}
+          </div>
+
+          <div class="vq-field">
+            <label for="{{ form.travel_class.id }}">Travel Class</label>
+            {{ form.travel_class }}
+          </div>
+        </div>
+
+        <div class="vq-form__submit">
+          <button type="submit" class="vq-btn vq-btn--primary">
+            Analyze Trip
+            <svg viewBox="0 0 20 20" fill="none" class="vq-btn__icon" aria-hidden="true">
+              <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       3. RESULTS SECTION
+  ============================================================= -->
+  {% if dashboard_data %}
+  <div class="vq-results">
+
+    <!-- ==========================================================
+         4. FLIGHT RECOMMENDATIONS
+    =========================================================== -->
+    <section class="vq-section">
+      <div class="vq-section__head">
+        <div class="vq-section__title">
+          <i class="fa-solid fa-plane-departure vq-section__icon"></i>
+          <h2>Top Flight Options</h2>
+        </div>
+        <span class="vq-section__meta">{{ dashboard_data.flights|length }} results</span>
+      </div>
+
+      <div class="vq-flight-list">
+        {% for flight in dashboard_data.flights[:3] %}
+        <article class="vq-flight-card">
+          <div class="vq-flight-card__main">
+            <div class="vq-flight-card__airline">
+              <span class="vq-flight-card__airline-dot"></span>
+              <span>{{ flight.airline }}</span>
+            </div>
+
+            <div class="vq-flight-card__route">
+              <div class="vq-flight-card__point">
+                <span class="vq-flight-card__time">{{ flight.departure_time }}</span>
+                <span class="vq-flight-card__city">{{ flight.departure_city }}</span>
+              </div>
+
+              <div class="vq-flight-card__path">
+                <span class="vq-flight-card__line"></span>
+                <svg viewBox="0 0 24 24" fill="none" class="vq-flight-card__plane" aria-hidden="true">
+                  <path d="M2 12l7-2 5-8 2 1-3 7 6-1 3-3 2 1-3 5-9 2-2 4-2-1 1-4-4 1-1-2 4-2-6 2z" fill="currentColor"
+                    opacity="0" />
+                  <path
+                    d="M21 6.5c0 .3-.2.6-.5.8L15 11l-2.5 8.7a.6.6 0 0 1-1.1.1l-2-4.3-4.3-2a.6.6 0 0 1 .1-1.1L13.7 9.5l3.7-4.5c.3-.3.7-.5 1.1-.5.9 0 1.5.7 1.5 1.5v.5z"
+                    fill="currentColor" />
+                </svg>
+                <span class="vq-flight-card__line"></span>
+              </div>
+
+              <div class="vq-flight-card__point vq-flight-card__point--end">
+                <span class="vq-flight-card__time">{{ flight.arrival_time }}</span>
+                <span class="vq-flight-card__city">{{ flight.arrival_city }}</span>
+              </div>
+            </div>
+
+            <span class="vq-badge vq-badge--neutral">{{ flight.cabin_class }}</span>
+          </div>
+
+          <div class="vq-flight-card__stub">
+            <span class="vq-flight-card__stub-label">Estimated Fare</span>
+            <span class="vq-flight-card__price">₹{{ flight.price }}</span>
+          </div>
+        </article>
+        {% else %}
+        <p class="vq-empty">No flight options found for this route.</p>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         5. HOTEL RECOMMENDATIONS
+    =========================================================== -->
+    <section class="vq-section">
+      <div class="vq-section__head">
+        <div class="vq-section__title">
+          <i class="fa-solid fa-hotel vq-section__icon"></i>
+          <h2>Top Hotel Options</h2>
+        </div>
+        <span class="vq-section__meta">{{ dashboard_data.hotels|length }} results</span>
+      </div>
+
+      <div class="vq-hotel-grid">
+        {% for hotel in dashboard_data.hotels[:3] %}
+        <article class="vq-hotel-card">
+          <div class="vq-hotel-card__image" style="background-image: url('{{ hotel.hotel_image }}');">
+            <span class="vq-hotel-card__rating">
+              {{ hotel.star_rating }} <span class="vq-star">★</span>
+            </span>
+          </div>
+
+          <div class="vq-hotel-card__body">
+            <h3 class="vq-hotel-card__name">{{ hotel.hotel_name }}</h3>
+            <p class="vq-hotel-card__location">{{ hotel.location }}</p>
+
+            <div class="vq-hotel-card__meta">
+              <span class="vq-badge vq-badge--score">{{ hotel.review_score }} / 10</span>
+              <span class="vq-hotel-card__price">
+                ₹{{ hotel.price_per_night }} <small>/ night</small>
+              </span>
+            </div>
+          </div>
+        </article>
+        {% else %}
+        <p class="vq-empty">No hotel options found for this destination.</p>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         6. WEATHER SUMMARY
+    =========================================================== -->
+
+    {% if dashboard_data.weather %}
+    <section class="vq-section">
+      <div class="vq-section__head">
+        <div class="vq-section__title">
+          <i class="fa-solid fa-cloud-sun vq-section__icon"></i>
+          <h2>Weather Summary</h2>
+        </div>
+      </div>
+
+      <div class="vq-weather-card">
+        <div class="vq-weather-card__primary">
+          <div class="vq-weather-card__icon-wrapper">
+            <i class="{{ dashboard_data.weather.current_weather.weather_icon }} vq-weather-card__icon"></i>
+          </div>
+          <div>
+            <span class="vq-weather-card__temp">{{ dashboard_data.weather.current_weather.temperature }}°</span>
+            <span class="vq-weather-card__condition">{{ dashboard_data.weather.current_weather.weather_condition
+              }}</span>
+          </div>
+        </div>
+
+        <div class="vq-weather-card__stats">
+          <div class="vq-weather-stat">
+            <span class="vq-weather-stat__label">Feels Like</span>
+            <span class="vq-weather-stat__value">{{ dashboard_data.weather.current_weather.feels_like }}°</span>
+          </div>
+          <div class="vq-weather-stat">
+            <span class="vq-weather-stat__label">Humidity</span>
+            <span class="vq-weather-stat__value">{{ dashboard_data.weather.current_weather.humidity }}%</span>
+          </div>
+        </div>
+
+        <div class="vq-weather-card__note">
+          {% for recommendation in dashboard_data.weather.recommendations %}
+          <div class="vq-weather-tip">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>{{ recommendation }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- ==========================================================
+         7. BUDGET SUMMARY
+    =========================================================== -->
+    {% if dashboard_data.budget %}
+    <section class="vq-section">
+      <div class="vq-section__head">
+        <div class="vq-section__title">
+          <i class="fa-solid fa-wallet vq-section__icon"></i>
+          <h2>Budget Summary</h2>
+        </div>
+      </div>
+
+      <div class="vq-budget-card">
+        <div class="vq-budget-card__row">
+          <div class="vq-budget-card__item">
+            <span class="vq-budget-card__label">Flight</span>
+            <span class="vq-budget-card__name">{{ dashboard_data.budget.flight_name }}</span>
+          </div>
+          <span class="vq-budget-card__amount">₹{{ dashboard_data.budget.flight_price }}</span>
+        </div>
+
+        <div class="vq-budget-card__row">
+          <div class="vq-budget-card__item">
+            <span class="vq-budget-card__label">Hotel</span>
+            <span class="vq-budget-card__name">{{ dashboard_data.budget.hotel_name }}</span>
+          </div>
+          <span class="vq-budget-card__amount">₹{{ dashboard_data.budget.hotel_price }}</span>
+        </div>
+
+        <div class="vq-budget-card__total">
+          <span>Estimated Budget</span>
+          <span class="vq-budget-card__total-amount">₹{{ dashboard_data.budget.budget }}</span>
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- ==========================================================
+         8. RECOMMENDATION SECTION
+    =========================================================== -->
+    {% if dashboard_data.recommendation %}
+    <section class="vq-section vq-section--last">
+      <div class="vq-section__head">
+        <div class="vq-section__title">
+          <i class="fa-solid fa-star vq-section__icon"></i>
+          <h2>Trip Recommendation</h2>
+        </div>
+      </div>
+
+      <div class="vq-recommend-panel">
+        <div class="vq-recommend-panel__score">
+          <div class="vq-gauge" style="--vq-score: {{ dashboard_data.trip_score }};">
+            <div class="vq-gauge__inner">
+              <span class="vq-gauge__value">{{ dashboard_data.trip_score }}</span>
+              <span class="vq-gauge__max">/ 10</span>
+            </div>
+          </div>
+          <span class="vq-badge vq-badge--status">{{ dashboard_data.recommendation.status }}</span>
+        </div>
+
+        <div class="vq-recommend-panel__body">
+          <p class="vq-recommend-panel__message">{{ dashboard_data.recommendation.message }}</p>
+
+          <div class="vq-recommend-panel__grid">
+            <div class="vq-recommend-item">
+              <span class="vq-recommend-item__label">Weather Summary</span>
+              <span class="vq-recommend-item__value">{{ dashboard_data.recommendation.weather_summary }}</span>
+            </div>
+
+            <div class="vq-recommend-item">
+              <span class="vq-recommend-item__label">Recommended Flight</span>
+              <span class="vq-recommend-item__value">
+                {{ dashboard_data.recommendation.recommended_flight.airline }} ·
+                {{ dashboard_data.recommendation.recommended_flight.departure_city }} → {{
+                dashboard_data.recommendation.recommended_flight.arrival_city }}
+              </span>
+            </div>
+
+            <div class="vq-recommend-item">
+              <span class="vq-recommend-item__label">Recommended Hotel</span>
+              <span class="vq-recommend-item__value">
+                {{ dashboard_data.recommendation.recommended_hotel.hotel_name }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}VoyageIQ — Plan Smarter. Travel Better.{% endblock %}</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/public/public.css') }}">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+  <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap"
+    rel="stylesheet">
+
+
+  <!-- Extra CSS-->
+  {% block extra_css %} {% endblock %}
+
+</head>
+
+<body>
+
+  <nav class="vq-navbar" id="vqNavbar">
+    <div class="container">
+      <div class="vq-navbar-inner">
+
+        <a href="#" class="vq-logo">
+          <div class="vq-brand">
+            <div class="vq-brand-mark" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 7.4 13.6 10 11 17.6l-1.5-5.1L4.4 11 2 9.5l9-3.1L13.5 2 14 5.6l7 1.8Z"
+                  fill="currentColor" />
+              </svg>
+            </div>
+            <span class="vq-brand-name">VoyageIQ</span>
+          </div>
+        </a>
+
+        <button class="vq-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#vqNavMenu"
+          aria-controls="vqNavMenu" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="vq-toggle-bar"></span>
+          <span class="vq-toggle-bar"></span>
+          <span class="vq-toggle-bar"></span>
+        </button>
+
+        <div class="collapse vq-nav-collapse" id="vqNavMenu">
+
+          <ul class="vq-nav-menu">
+            <li class="vq-nav-item">
+              <a href="{{ url_for('home.home') }}"
+                class="vq-nav-link vq-nav-link--home {% if request.endpoint == 'home.home' %}active{% endif %}">
+                <i class="fa-solid fa-house vq-nav-icon"></i>
+                <span class="vq-nav-text">Home</span>
+              </a>
+            </li>
+            <li class="vq-nav-item">
+              <a href="{{ url_for('flight.flight_search') }}"
+                class="vq-nav-link vq-nav-link--flights {% if request.endpoint == 'flight.flight_search' %}active{% endif %}">
+                <i class="fa-solid fa-plane-departure vq-nav-icon"></i>
+                <span class="vq-nav-text">Flights</span>
+              </a>
+            </li>
+            <li class="vq-nav-item">
+              <a href="{{ url_for('hotel.hotel_search') }}"
+                class="vq-nav-link vq-nav-link--hotels {% if request.endpoint == 'hotel.hotel_search' %}active{% endif %}">
+                <i class="fa-solid fa-hotel vq-nav-icon"></i>
+                <span class="vq-nav-text">Hotels</span>
+              </a>
+            </li>
+            <li class="vq-nav-item">
+              <a href="{{ url_for('weather.weather_search') }}"
+                class="vq-nav-link vq-nav-link--weather {% if request.endpoint == 'weather.weather_search' %}active{% endif %}">
+                <i class="fa-solid fa-cloud-sun vq-nav-icon"></i>
+                <span class="vq-nav-text">Weather</span>
+              </a>
+            </li>
+            <li class="vq-nav-item">
+              <a href="{{ url_for('contact.contact') }}"
+                class="vq-nav-link vq-nav-link--contact {% if request.endpoint == 'contact.contact' %}active{% endif %}">
+                <i class="fa-solid fa-envelope vq-nav-icon"></i>
+                <span class="vq-nav-text">Contact</span>
+              </a>
+            </li>
+          </ul>
+
+          <a href="{{ url_for('auth.login') }}" class="vq-login-btn vq-login-btn--mobile">Log in</a>
+
+        </div>
+
+        <a href="{{ url_for('auth.login') }}" class="vq-login-btn vq-login-btn--desktop">Log in</a>
+
+      </div>
+    </div>
+  </nav>
+
+  {% block content %}{% endblock %}
+
+  <footer class="vq-footer">
+    <div class="container">
+      <div class="row align-items-start">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <div class="vq-footer-logo mb-2">VoyageIQ</div>
+          <p class="text-muted mb-0" style="max-width:360px; font-size:0.9rem;">
+            Plan smarter. Travel better. Decide before you book.
+          </p>
+        </div>
+        <div class="col-lg-6 text-lg-end">
+          <a href="{{ url_for('home.home')}}" class="vq-footer-link">Home</a>
+          <a href="{{ url_for('flight.flight_search')}}" class="vq-footer-link">Flights</a>
+          <a href="{{ url_for('hotel.hotel_search')}}" class="vq-footer-link">Hotels</a>
+          <a href="{{ url_for('weather.weather_search')}}#" class="vq-footer-link">Weather</a>
+          <a href="{{ url_for('contact.contact')}}" class="vq-footer-link" style="margin-right:0;">Contact</a>
+        </div>
+      </div>
+      <div class="vq-footer-bottom">
+        © {{ now.year if now else '2026' }} VoyageIQ. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ url_for('static', filename='js/public/public.js') }}"></script>
+
+
+  {% block scripts %}{% endblock %}
+</body>
+
+</html>

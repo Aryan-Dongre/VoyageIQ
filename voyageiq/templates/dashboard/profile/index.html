@@ -1,0 +1,105 @@
+{% extends "dashboard/base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile/profile.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+
+  <div class="profile-header">
+    <h1 class="profile-title">Profile</h1>
+    <p class="profile-subtitle">Manage your personal account information and preferences.</p>
+  </div>
+
+  <section class="profile-hero-card">
+    <div class="profile-avatar">
+      {% if profile.profile_image %}
+        <img class="profile-avatar-image" src="{{ profile.profile_image }}" alt="{{ profile.full_name }}'s profile picture">
+      {% else %}
+        <div class="profile-avatar-placeholder">
+          <span>{{ profile.full_name[0]|upper  }}</span>
+        </div>
+      {% endif %}
+    </div>
+
+    <h2 class="profile-name">{{ profile.full_name  }}</h2>
+    <p class="profile-username">@{{ profile.username  }}</p>
+
+    <div class="profile-member-since">
+      <span class="profile-member-since-label">Member Since</span>
+      <span class="profile-member-since-value">{{ profile.created_at }}</span>
+    </div>
+  </section>
+
+  <section class="profile-form-card">
+    <div class="profile-form-header">
+      <h3 class="profile-form-title">Personal Information</h3>
+      <p class="profile-form-subtitle">Keep your details up to date so we can personalize your journeys.</p>
+    </div>
+
+    <form method="POST" class="profile-form">
+       {{ form.hidden_tag() }}
+
+      <div class="profile-form-grid">
+
+        <div class="profile-field">
+          <label class="profile-label" for="fullName">Full Name</label>
+          {{ form.full_name(
+             class="profile-input",
+             id="fullname",
+             placeholder="Enter your full name"
+          )}}
+        </div>
+
+        <div class="profile-field">  <!--This value is not coming from form-->
+          <label class="profile-label" for="username">Username</label>
+          <input class="profile-input readonly-input" type="text" id="username" name="username" value="{{ profile.username  }}" readonly disabled>
+        </div>
+
+        <div class="profile-field">
+          <label class="profile-label" for="email">Email</label>
+          <input class="profile-input readonly-input" type="email" id="email" name="email" value="{{ profile.email  }}" readonly disabled>
+        </div>
+
+        <div class="profile-field">
+          <label class="profile-label" for="phoneNumber">Phone Number</label>
+         {{ form.phone( class="profile-input", id="phoneNumber", placeholder="+91 99999-88888" ) }}
+        </div>
+
+        <div class="profile-field">
+          <label class="profile-label" for="country">Country</label>
+          {{ form.country( class="profile-input", id="country", placeholder="Enter your country" ) }}
+        </div>
+
+        <div class="profile-field profile-field-wide">
+          <label class="profile-label" for="profileImageUrl">Profile Picture URL</label>
+          {{ form.profile_picture( class="profile-input", id="profileImageUrl", placeholder="https://example.com/your-photo.jpg" ) }}
+        </div>
+
+      </div>
+
+      <div class="profile-preview-section">
+
+        <div class="profile-preview-avatar">
+          {% if profile.profile_image %}
+            <img src="{{ profile.profile_image }}" alt="Profile picture preview">
+          {% else %}
+            <span>{{ profile.full_name[0]|upper  }}</span>
+          {% endif %}
+        </div>
+
+        <div class="profile-preview-text">
+          <span class="profile-preview-title">Picture Preview</span>
+          <span class="profile-preview-subtitle">This is how your profile picture will appear across VoyageIQ.</span>
+        </div>
+      </div>
+
+      <div class="profile-actions">
+        <button type="submit" class="update-profile-btn">Update Profile</button>
+      </div>
+    </form>
+  </section>
+
+</div>
+{% endblock %}

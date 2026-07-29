@@ -1,0 +1,410 @@
+{% extends "public/base.html" %}
+
+{% block title %}VoyageIQ — Travel Intelligence Platform{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home/home.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<!-- SECTION 1: HERO -->
+<section class="vq-hero">
+  <div class="container vq-hero-inner">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <span class="vq-badge"><i class="fa-solid fa-sparkles"></i> Travel Intelligence Platform</span>
+        <h1>Travel Smarter.<br>Decide With Confidence.</h1>
+        <p class="vq-sub">
+          VoyageIQ brings flights, hotels, weather, and budget analysis into
+          one intelligent dashboard — so you decide before you book, not after.
+        </p>
+        <div class="vq-hero-actions">
+          <a href="{{ url_for('flight.flight_search') }}" class="vq-btn vq-btn-primary">
+            <i class="fa-solid fa-plane-departure"></i> Search Flights
+          </a>
+          <a href="#how-it-works" class="vq-btn vq-btn-secondary">See How It Works</a>
+        </div>
+        <div class="vq-hero-trust">
+          <span><i class="fa-solid fa-check"></i> No booking fees</span>
+          <span><i class="fa-solid fa-check"></i> Real-time weather</span>
+          <span><i class="fa-solid fa-check"></i> Smart budget insights</span>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="vq-dashboard-preview">
+          <div class="vq-dash-card vq-dash-card--flight">
+            <div class="vq-dash-card-head">
+              <span class="vq-dash-icon vq-dash-icon--blue"><i class="fa-solid fa-plane-departure"></i></span>
+              <span class="vq-dash-tag">Flight Intelligence</span>
+            </div>
+            <div class="vq-dash-value">Mumbai → Lisbon</div>
+            <div class="vq-dash-meta">3 routes compared · best value found</div>
+          </div>
+
+          <div class="vq-dash-card vq-dash-card--weather">
+            <div class="vq-dash-card-head">
+              <span class="vq-dash-icon vq-dash-icon--orange"><i class="fa-solid fa-cloud-sun"></i></span>
+              <span class="vq-dash-tag">Weather Insight</span>
+            </div>
+            <div class="vq-dash-value">22°C · Clear Skies</div>
+            <div class="vq-dash-meta">Ideal travel window: Oct 12–19</div>
+          </div>
+
+          <div class="vq-dash-card vq-dash-card--budget">
+            <div class="vq-dash-card-head">
+              <span class="vq-dash-icon vq-dash-icon--green"><i class="fa-solid fa-wallet"></i></span>
+              <span class="vq-dash-tag">Budget Estimate</span>
+            </div>
+            <div class="vq-dash-value">₹58,400</div>
+            <div class="vq-dash-meta">Flights + stay + daily spend</div>
+          </div>
+
+          <div class="vq-dash-card vq-dash-card--reco">
+            <div class="vq-dash-card-head">
+              <span class="vq-dash-icon vq-dash-icon--purple"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+              <span class="vq-dash-tag">Recommended</span>
+            </div>
+            <div class="vq-dash-value">Lisbon fits your profile</div>
+            <div class="vq-dash-meta">94% match on weather & budget</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: WHY VOYAGEIQ -->
+<section class="vq-section-why">
+  <div class="container">
+    <div class="text-center mb-5 vq-reveal">
+      <div class="vq-kicker">Why VoyageIQ</div>
+      <h2 class="vq-h2">Why Travelers Need VoyageIQ</h2>
+      <p class="vq-section-sub">Planning a trip means juggling a dozen tabs. VoyageIQ replaces the juggling with one
+        clear view.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4 vq-reveal">
+        <div class="vq-why-card">
+          <div class="vq-why-problem">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>Too many travel websites</span>
+          </div>
+          <div class="vq-why-divider"></div>
+          <div class="vq-why-solution">
+            <i class="fa-solid fa-check"></i>
+            <span>Flights, hotels & weather in one dashboard</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 vq-reveal">
+        <div class="vq-why-card">
+          <div class="vq-why-problem">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>Weather uncertainty</span>
+          </div>
+          <div class="vq-why-divider"></div>
+          <div class="vq-why-solution">
+            <i class="fa-solid fa-check"></i>
+            <span>Destination weather insight, before you book</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 vq-reveal">
+        <div class="vq-why-card">
+          <div class="vq-why-problem">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>Difficult budget planning</span>
+          </div>
+          <div class="vq-why-divider"></div>
+          <div class="vq-why-solution">
+            <i class="fa-solid fa-check"></i>
+            <span>Instant, itemized trip budget estimates</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: CORE FEATURES -->
+<section class="vq-section-features">
+  <div class="container">
+    <div class="text-center mb-5 vq-reveal">
+      <div class="vq-kicker">Core Features</div>
+      <h2 class="vq-h2">Everything You Need, Already Built</h2>
+    </div>
+    <div class="row g-4">
+
+      <div class="col-md-6 col-lg-4 vq-reveal">
+        <div class="vq-feature-card">
+          <div class="vq-feature-icon vq-feature-icon--blue"><i class="fa-solid fa-plane-departure"></i></div>
+          <h3>Flight Intelligence</h3>
+          <p>Compare routes and fares across options in seconds.</p>
+          <ul class="vq-feature-list">
+            <li>Multi-route comparison</li>
+            <li>Best-value highlighting</li>
+          </ul>
+
+          <div class="vq-feature-preview-label">
+            Preview →
+          </div>
+
+          <div class="vq-feature-preview">
+            <img src="{{ url_for('static', filename='images/Flight.png') }}" alt="Flight Search Preview">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4 vq-reveal">
+        <div class="vq-feature-card">
+          <div class="vq-feature-icon vq-feature-icon--cyan"><i class="fa-solid fa-hotel"></i></div>
+          <h3>Hotel Discovery</h3>
+          <p>Find stays that match your location and budget.</p>
+          <ul class="vq-feature-list">
+            <li>Location-based results</li>
+            <li>Rating & price filters</li>
+          </ul>
+
+           <div class="vq-feature-preview-label">
+            Preview →
+          </div>
+
+          <div class="vq-feature-preview">
+            <img src="{{url_for('static', filename='images/Hotel.png')}}" alt="Hotel Search Preview">
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4 vq-reveal">
+        <div class="vq-feature-card">
+          <div class="vq-feature-icon vq-feature-icon--orange"><i class="fa-solid fa-cloud-sun"></i></div>
+          <h3>Weather Insights</h3>
+          <p>Know the conditions before you commit to dates.</p>
+          <ul class="vq-feature-list">
+            <li>Destination forecasts</li>
+            <li>Ideal travel windows</li>
+          </ul>
+
+          <div class="vq-feature-preview-label">
+            Preview →
+          </div>
+
+          <div class="vq-feature-preview">
+            <img src="{{url_for('static', filename='images/Weather.png')}}" alt="">
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4 vq-reveal">
+        <div class="vq-feature-card">
+          <div class="vq-feature-icon vq-feature-icon--green"><i class="fa-solid fa-wallet"></i></div>
+          <h3>Budget Planning</h3>
+          <p>See an itemized cost estimate for your whole trip.</p>
+          <ul class="vq-feature-list">
+            <li>Flights + stay + daily spend</li>
+            <li>Instant recalculation</li>
+          </ul>
+
+          <div class="vq-feature-preview-label">
+            Preview →
+          </div>
+
+          <div class="vq-feature-preview">
+            <img src="{{url_for('static', filename='images/budget.png')}}" alt="Budget Preview">
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4 vq-reveal">
+        <div class="vq-feature-card">
+          <div class="vq-feature-icon vq-feature-icon--purple"><i class="fa-solid fa-bullseye"></i></div>
+          <h3>Target Trip Planner</h3>
+          <p>Set a destination and budget goal, and track it over time.</p>
+          <ul class="vq-feature-list">
+            <li>Savings-style trip tracking</li>
+            <li>Progress toward your goal</li>
+          </ul>
+
+          <div class="vq-feature-preview-label">
+            Preview →
+          </div>
+
+          <div class="vq-feature-preview">
+            <img src="{{url_for('static', filename='images/Target trip.png')}}" alt="Target Trip Preview">
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4 vq-reveal">
+        <div class="vq-feature-card">
+          <div class="vq-feature-icon vq-feature-icon--pink"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+          <h3>Smart Recommendations</h3>
+          <p>Get destination suggestions tuned to how you travel.</p>
+          <ul class="vq-feature-list">
+            <li>Weather + budget matching</li>
+            <li>Personalized ranking</li>
+          </ul>
+
+          <div class="vq-feature-preview-label">
+            Preview →
+          </div>
+
+          <div class="vq-feature-preview">
+            <img src="{{url_for('static', filename='images/Recommendation.png')}}" alt="Recommendation Preview">
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: HOW IT WORKS -->
+<section class="vq-section-howto" id="how-it-works">
+  <div class="container">
+    <div class="text-center mb-5 vq-reveal">
+      <div class="vq-kicker">How It Works</div>
+      <h2 class="vq-h2">Search. Analyze. Decide.</h2>
+    </div>
+    <div class="vq-process">
+      <div class="vq-process-step vq-reveal">
+        <div class="vq-process-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+        <div class="vq-process-num">01</div>
+        <h4>Search</h4>
+        <p>Tell VoyageIQ your destination, dates, and budget.</p>
+      </div>
+      <div class="vq-process-arrow" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></div>
+      <div class="vq-process-step vq-reveal">
+        <div class="vq-process-icon"><i class="fa-solid fa-chart-line"></i></div>
+        <div class="vq-process-num">02</div>
+        <h4>Analyze</h4>
+        <p>VoyageIQ compares flights, hotels, weather & cost together.</p>
+      </div>
+      <div class="vq-process-arrow" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></div>
+      <div class="vq-process-step vq-reveal">
+        <div class="vq-process-icon"><i class="fa-solid fa-circle-check"></i></div>
+        <div class="vq-process-num">03</div>
+        <h4>Decide</h4>
+        <p>Book with confidence, knowing you chose well.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: EVERYTHING IN ONE TRAVEL DASHBOARD -->
+<section class="vq-section-dashboard">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-5 vq-reveal">
+        <span class="vq-badge"><i class="fa-solid fa-layer-group"></i> Travel Intelligence Platform</span>
+        <h2 class="vq-h2" style="margin-top:16px;">Everything You Need Before You Book</h2>
+        <p class="vq-section-sub" style="text-align:left; margin:0 0 24px;">
+          VoyageIQ combines flight search, hotel discovery, weather analysis,
+          budget planning, and trip recommendations into a single experience —
+          no more switching between five different apps.
+        </p>
+        <ul class="vq-checklist">
+          <li><i class="fa-solid fa-check"></i> Flight Search</li>
+          <li><i class="fa-solid fa-check"></i> Hotel Discovery</li>
+          <li><i class="fa-solid fa-check"></i> Weather Analysis</li>
+          <li><i class="fa-solid fa-check"></i> Budget Planning</li>
+          <li><i class="fa-solid fa-check"></i> Target Trip Tracking</li>
+          <li><i class="fa-solid fa-check"></i> Smart Dashboard</li>
+        </ul>
+        <div class="vq-hero-actions">
+          <a href="#" class="vq-btn vq-btn-primary">Explore Features</a>
+          <!-- TODO: replace with url_for('auth.register') or your signup endpoint -->
+          <a href="#" class="vq-btn vq-btn-secondary">Create Account</a>
+        </div>
+      </div>
+
+      <div class="col-lg-7 vq-reveal">
+        <div class="vq-dashboard-stack">
+          <div class="vq-stack-card vq-stack-card--flight">
+            <span class="vq-dash-icon vq-dash-icon--blue"><i class="fa-solid fa-plane-departure"></i></span>
+            <div>
+              <div class="vq-dash-tag">Flight Search</div>
+              <div class="vq-dash-value">Delhi → Bangkok</div>
+            </div>
+          </div>
+          <div class="vq-stack-card vq-stack-card--weather">
+            <span class="vq-dash-icon vq-dash-icon--orange"><i class="fa-solid fa-cloud-sun"></i></span>
+            <div>
+              <div class="vq-dash-tag">Weather Summary</div>
+              <div class="vq-dash-value">29°C · Humid</div>
+            </div>
+          </div>
+          <div class="vq-stack-card vq-stack-card--budget">
+            <span class="vq-dash-icon vq-dash-icon--green"><i class="fa-solid fa-wallet"></i></span>
+            <div>
+              <div class="vq-dash-tag">Budget Summary</div>
+              <div class="vq-dash-value">₹41,200 est.</div>
+            </div>
+          </div>
+          <div class="vq-stack-card vq-stack-card--target">
+            <span class="vq-dash-icon vq-dash-icon--purple"><i class="fa-solid fa-bullseye"></i></span>
+            <div>
+              <div class="vq-dash-tag">Target Trip</div>
+              <div class="vq-dash-value">72% funded</div>
+            </div>
+          </div>
+          <div class="vq-stack-card vq-stack-card--reco">
+            <span class="vq-dash-icon vq-dash-icon--pink"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+            <div>
+              <div class="vq-dash-tag">Recommended</div>
+              <div class="vq-dash-value">Bangkok · 91% match</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: CREDIBILITY / VALUE INDICATORS -->
+<section class="vq-section-proof">
+  <div class="container">
+    <div class="vq-proof-grid vq-reveal">
+      <div class="vq-proof-item">
+        <div class="vq-proof-icon"><i class="fa-solid fa-brain"></i></div>
+        <div class="vq-proof-label">Travel Intelligence</div>
+      </div>
+      <div class="vq-proof-item">
+        <div class="vq-proof-icon"><i class="fa-solid fa-wallet"></i></div>
+        <div class="vq-proof-label">Budget Awareness</div>
+      </div>
+      <div class="vq-proof-item">
+        <div class="vq-proof-icon"><i class="fa-solid fa-cloud-sun"></i></div>
+        <div class="vq-proof-label">Weather Insights</div>
+      </div>
+      <div class="vq-proof-item">
+        <div class="vq-proof-icon"><i class="fa-solid fa-circle-check"></i></div>
+        <div class="vq-proof-label">Smarter Decisions</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7: FINAL CTA -->
+<section class="vq-section-cta">
+  <div class="container">
+    <div class="vq-cta-inner vq-reveal">
+      <h2>Ready To Travel Smarter?</h2>
+      <p>One place for flights, hotels, weather and travel intelligence.</p>
+      <div class="vq-hero-actions" style="justify-content:center;">
+        <a href="{{ url_for('flight.flight_search') }}" class="vq-btn vq-btn-cta">Explore Flights</a>
+        <!-- TODO: replace with your signup endpoint -->
+        <a href="{{ url_for('auth.register')}}" class="vq-btn vq-btn-secondary">Create Free Account</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

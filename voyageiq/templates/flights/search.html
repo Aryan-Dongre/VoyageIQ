@@ -1,0 +1,251 @@
+{% extends "public/base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/flights/flight.css') }}">
+{% endblock %}
+
+
+{% block content %}
+<!--  HERO + SEARCH FORM -->
+<header class="vq-hero">
+  <div class="container">
+    <p class="vq-eyebrow">VoyageIQ &middot; Travel Decision Platform</p>
+    <h1 class="vq-hero-title">Know before you fly.</h1>
+    <p class="vq-hero-sub">
+      Compare real fares, real schedules, and real trade&#8209;offs &mdash;
+      so you decide with confidence, not guesswork.
+    </p>
+  </div>
+
+  <div class="container">
+    <div class="vq-search-card">
+      <form method="POST" action="{{ url_for(request.endpoint) }}" novalidate>
+        {{ form.hidden_tag() if form.hidden_tag is defined }}
+
+        <div class="row g-3 align-items-start">
+
+          <div class="col-12 col-md-6 col-lg-3 position-relative">
+
+            <label class="vq-label" for="{{ form.origin.id }}">From</label>
+
+            {{ form.origin
+              (id ="origin-input",
+                class="form-control vq-input", 
+               placeholder="Origin city or airport",
+               autocomplete="off"
+              ) }}
+              <div id="origin-suggestions" 
+                   class="airport-suggestions">
+              </div>
+
+            {% for error in form.origin.errors %}
+            <div class="invalid-feedback d-block">{{ error }}</div>
+            {% endfor %}
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-3 position-relative">
+            <label class="vq-label" for="{{ form.destination.id }}">To</label>
+            {{ form.destination(
+                                 id = "destination-input",
+                                class="form-control vq-input" ~ (" is-invalid" if form.destination.errors else ""),
+                                placeholder="Destination city or airport",
+                                autocomplete="off"
+                              ) }}
+                <div id="destination-suggestions"
+                     class="airport-suggestions">
+                </div>              
+            {% for error in form.destination.errors %}
+            <div class="invalid-feedback d-block">{{ error }}</div>
+            {% endfor %}
+          </div>
+
+          <div class="col-6 col-md-3 col-lg-2">
+            <label class="vq-label" for="{{ form.departure_date.id }}">Departure</label>
+            {{ form.departure_date(class="form-control vq-input" ~ (" is-invalid" if form.departure_date.errors else
+            "")) }}
+            {% for error in form.departure_date.errors %}
+            <div class="invalid-feedback d-block">{{ error }}</div>
+            {% endfor %}
+          </div>
+
+          <div class="col-6 col-md-3 col-lg-2">
+
+            <label class="vq-label"
+                    for="{{ form.trip_type.id }}">
+                  Trip Type
+            </label>
+
+            {{ form.trip_type(
+                  class="form-select vq-input" ~
+                  (" is-invalid" if form.trip_type.errors else ""),
+                  id="vq-trip-type"
+            ) }}
+
+            {% for error in form.trip_type.errors %}
+              <div class="invalid-feedback d-block">
+                  {{ error }}
+              </div>
+            {% endfor %}
+
+          </div>
+
+          <div class="col-12 col-lg-2 d-grid">
+            <label class="vq-label d-none d-lg-block">&nbsp;</label>
+            {{ form.submit(
+                           class="btn vq-btn-search",
+                           id="flight-search-btn",
+                            value="Search flights")  }}
+            {% if form.submit is not defined %}
+            <button type="submit" class="btn vq-btn-search">Search flights</button>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="row g-3 align-items-start vq-search-row-two">
+
+          <div class="col-6 col-md-4 col-lg-3"
+              id="vq-return-date-group">
+
+              <label class="vq-label"
+                    for="{{ form.return_date.id }}">
+                    Return
+              </label>
+
+              {{ form.return_date(
+                  class="form-control vq-input" ~
+                  (" is-invalid" if form.return_date.errors else "")
+              ) }}
+
+              {% for error in form.return_date.errors %}
+              <div class="invalid-feedback d-block">
+                  {{ error }}
+              </div>
+              {% endfor %}
+
+          </div>
+
+          <div class="col-6 col-md-4 col-lg-3">
+            <label class="vq-label" for="{{ form.adults.id }}">Adults</label>
+            {{ form.adults(class="form-control vq-input" ~ (" is-invalid" if form.adults.errors else ""), min="1") }}
+            {% for error in form.adults.errors %}
+            <div class="invalid-feedback d-block">{{ error }}</div>
+            {% endfor %}
+          </div>
+
+          <div class="col-12 col-md-4 col-lg-3">
+            <label class="vq-label" for="{{ form.travel_class.id }}">Class</label>
+            {{ form.travel_class(class="form-select vq-input" ~ (" is-invalid" if form.travel_class.errors else "")) }}
+            {% for error in form.travel_class.errors %}
+            <div class="invalid-feedback d-block">{{ error }}</div>
+            {% endfor %}
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</header>
+
+<!-- RESULTS-->
+<main class="vq-results">
+  <div class="container">
+
+    {% if flights %}
+    <div class="vq-results-head">
+      <h2 class="vq-results-title">{{ flights|length }} flight{{ 's' if flights|length != 1 else '' }} found</h2>
+      <p class="vq-results-sub">Sorted by departure time &middot; showing the fastest way to compare your options</p>
+    </div>
+
+    <div class="vq-flight-list" id="vq-flight-list">
+      {% for flight in flights %}
+      <article class="vq-flight-card{{ '' if loop.index <= 5 else ' vq-hidden' }}" data-index="{{ loop.index0 }}">
+
+        <div class="vq-card-airline">
+          <span class="vq-airline-name">{{ flight.airline }}</span>
+          <span class="vq-flight-number">{{ flight.flight_number }}</span>
+          <span class="vq-cabin-pill">{{ flight.cabin_class }}</span>
+        </div>
+
+        <div class="vq-card-route">
+
+          <div class="vq-endpoint">
+            <span class="vq-time">{{ flight.departure_time.split(' ')[1] if ' ' in flight.departure_time else
+              flight.departure_time }}</span>
+            <span class="vq-code">{{ flight.departure_city }}</span>
+            <span class="vq-airport-name">{{ flight.departure_airport }}</span>
+          </div>
+
+          <div class="vq-path">
+            <span class="vq-duration">
+              {% set hours = (flight.duration_minutes // 60) %}
+              {% set mins = (flight.duration_minutes % 60) %}
+              {{ hours }}h {{ '%02d'|format(mins) }}m
+            </span>
+            <div class="vq-path-line">
+              <span class="vq-dot vq-dot-start"></span>
+              <span class="vq-plane" aria-hidden="true">&#9992;</span>
+              <span class="vq-dot vq-dot-end"></span>
+            </div>
+            <span class="vq-nonstop">Nonstop</span>
+          </div>
+
+          <div class="vq-endpoint vq-endpoint-end">
+            <span class="vq-time">{{ flight.arrival_time.split(' ')[1] if ' ' in flight.arrival_time else
+              flight.arrival_time }}</span>
+            <span class="vq-code">{{ flight.arrival_city }}</span>
+            <span class="vq-airport-name">{{ flight.arrival_airport }}</span>
+          </div>
+
+        </div>
+
+        <div class="vq-card-price">
+          <span class="vq-price-amount">
+
+{% if flight.price %}
+    {% if flight.currency == 'INR' %}
+        ₹{{ "{:,}".format(flight.price) }}
+    {% elif flight.currency == 'USD' %}
+        ${{ "{:,}".format(flight.price) }}
+    {% elif flight.currency == 'EUR' %}
+        €{{ "{:,}".format(flight.price) }}
+    {% else %}
+        {{ flight.currency }} {{ "{:,}".format(flight.price) }}
+    {% endif %}
+{% else %}
+    Price unavailable
+{% endif %}
+
+</span>
+          <span class="vq-price-currency">{{ flight.currency }} &middot; per adult</span>
+        </div>
+
+      </article>
+      {% endfor %}
+    </div>
+
+    {% if flights|length > 5 %}
+    <div class="vq-view-more-wrap">
+      <button type="button" id="vq-view-more" class="btn vq-btn-outline">
+        View more flights
+        <span id="vq-view-more-count">({{ flights|length - 5 }} more)</span>
+      </button>
+    </div>
+    {% endif %}
+
+    {% elif flights is not none %}
+    <div class="vq-empty-state">
+      <h2>No flights matched that search</h2>
+      <p>Try adjusting your dates or route, or double&#8209;check the airport codes above.</p>
+    </div>
+    {% endif %}
+
+  </div>
+</main>
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/flights/flight.js') }}"></script>
+{% endblock %}
+
+
+{% endblock %}
+

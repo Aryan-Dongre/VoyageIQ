@@ -1,0 +1,212 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Create Target Trip{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/target_trip/create.css') }}">
+
+<div class="ctt-page">
+
+  <!-- Header Section -->
+  <div class="ctt-header">
+    <div class="ctt-header-text">
+      <h1 class="ctt-title">Create Target Trip</h1>
+      <p class="ctt-subtitle">Save your future travel goal and let VoyageIQ help you track the best opportunities.</p>
+    </div>
+    <div class="ctt-header-actions">
+      <a href="{{ url_for('target_trip.target_trip_home') }}" class="ctt-btn ctt-btn-outline">
+        <span class="ctt-btn-icon">&larr;</span>
+        Back to Target Trips
+      </a>
+    </div>
+  </div>
+
+  <div class="ctt-layout">
+
+    <!-- Main Form Container -->
+    <div class="ctt-form-card">
+      <div class="ctt-form-card-head">
+        <h2 class="ctt-form-title">Target Trip Details</h2>
+        <p class="ctt-form-subtitle">Tell us about your future travel plans.</p>
+      </div>
+
+      <form method="POST" class="ctt-form">
+        {{ form.hidden_tag() }}
+
+        <!--Route part-->
+        <div class="ctt-fieldset">
+          <div class="ctt-fieldset-head">
+            <h3 class="ctt-fieldset-title">
+              Route Information
+            </h3>
+          </div>
+
+          <div class="ctt-grid-2">
+            <div class="ctt-field">
+              {{ form.origin.label(class="ctt-label") }}
+              {{ form.origin(class="ctt-input",
+              id="origin-input",
+              autocomplete="off") }}
+
+              <div id="origin-suggestions" class="airport-suggestions">
+              </div>
+
+
+              {% for error in form.origin.errors %}
+              <small class="ctt-error">{{ error }}</small>
+              {% endfor %}
+            </div>
+
+            <div class="ctt-field">
+              {{ form.destination.label(class="ctt-label") }}
+              {{ form.destination(class="ctt-input",
+              id="destination-input",
+              autocomplete="off") }}
+
+              <div 
+                id="destination-suggestions" class="airport-suggestions">
+              </div>
+
+              {% for error in form.destination.errors %}
+              <small class="ctt-error">{{ error }}</small>
+              {% endfor %}
+            </div>
+
+          </div>
+        </div>
+
+        <!--Travel Part-->
+        <div class="ctt-fieldset">
+
+          <div class="ctt-fieldset-head">
+            <h3 class="ctt-fieldset-title">
+              Travel Perefences
+            </h3>
+          </div>
+
+          <div class="ctt-grid-2">
+
+            <div class="ctt-field">
+              {{ form.travelers.label(class="ctt-label") }}
+              {{ form.travelers(class="ctt.input") }}
+
+              {% for error in form.travelers.errors %}
+              <small class="ctt-error">{{ error }}</small>
+              {% endfor %}
+            </div>
+
+            <div class="ctt-field">
+              {{ form.travel_class.label(class="ctt-label") }}
+              {{ form.travel_class(class="ctt-input ctt-select") }}
+
+              {% for error in form.travel_class.errors %}
+              <small class="ctt-error">{{ error }}</small>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Travel Window-->
+        <div class="ctt-fieldset">
+
+          <div class="ctt-fieldset-head">
+            <h3 class="ctt-fieldset-title">
+              Travel Window
+            </h3>
+          </div>
+
+          <div class="ctt-grid-3">
+
+            <div class="ctt-field">
+              {{ form.start_month.label(class="ctt-label") }}
+              {{ form.start_month(class="ctt-input ctt-select") }}
+            </div>
+
+            <div class="ctt-field">
+              {{ form.end_month.label(class="ctt-label") }}
+              {{ form.end_month(class="ctt-input ctt-select") }}
+            </div>
+
+            <div class="ctt-field">
+              {{ form.travel_year.label(class="ctt-label") }}
+              {{ form.travel_year(class="ctt-input") }}
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Flight Budget-->
+        <div class="ctt-fieldset">
+
+          <div class="ctt-fieldset-head">
+            <h3 class="ctt-fieldset-title">
+              Flight Budget Range
+            </h3>
+          </div>
+
+          <div class="ctt-grid-2">
+
+            <div class="ctt-field">
+              {{ form.flight_min_price.label(class="ctt-label") }}
+              {{ form.flight_min_price(class="ctt-input") }}
+            </div>
+
+            <div class="ctt-field">
+              {{ form.flight_max_price.label(class="ctt-label") }}
+              {{ form.flight_max_price(class="ctt-input") }}
+            </div>
+
+          </div>
+
+        </div>
+
+        <!--Hotel Budget-->
+        <div class="ctt-fieldset">
+
+          <div class="ctt-fieldset-head">
+            <h3 class="ctt-fieldset-title">
+              Hotel Budget Range
+            </h3>
+          </div>
+
+          <div class="ctt-grid-2">
+
+            <div class="ctt-field">
+              {{ form.hotel_min_price.label(class="ctt-label") }}
+              {{ form.hotel_min_price(class="ctt-input") }}
+            </div>
+
+            <div class="ctt-field">
+              {{ form.hotel_max_price.label(class="ctt-label") }}
+              {{ form.hotel_max_price(class="ctt-input") }}
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="ctt-form-actions">
+
+          {{ form.submit(class="ctt-btn ctt-btn-primary") }}
+
+          <a href="{{ url_for('target_trip.target_trip_home') }}" class="ctt-btn ctt-btn-cancel">
+            Cancel
+          </a>
+
+        </div>
+
+      </form>
+    </div>
+
+
+
+  </div>
+
+</div>
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/target_trip/target_trip.js') }}"></script>
+{% endblock %}
+
+{% endblock %}

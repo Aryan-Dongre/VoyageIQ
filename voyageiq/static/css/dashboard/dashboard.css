@@ -1,0 +1,932 @@
+/* ============================================================
+   VoyageIQ Dashboard — Premium SaaS Design System
+   ============================================================ */
+
+:root {
+  --vq-bg: #F7F8FA;
+  --vq-surface: #FFFFFF;
+  --vq-surface-muted: #FAFBFC;
+
+  --vq-border: #ECEEF1;
+  --vq-border-strong: #E2E5EA;
+
+  --vq-text-primary: #101828;
+  --vq-text-secondary: #667085;
+  --vq-text-muted: #98A2B3;
+
+  --vq-blue: #2563EB;
+  --vq-blue-bg: #EFF6FF;
+  --vq-purple: #7C3AED;
+  --vq-purple-bg: #F5F3FF;
+  --vq-cyan: #0891B2;
+  --vq-cyan-bg: #ECFEFF;
+  --vq-green: #059669;
+  --vq-green-bg: #ECFDF5;
+  --vq-orange: #D97706;
+  --vq-orange-bg: #FFFBEB;
+  --vq-rose: #E11D48;
+  --vq-rose-bg: #FFF1F2;
+
+  --vq-success: #059669;
+  --vq-success-bg: #ECFDF5;
+  --vq-warning: #D97706;
+  --vq-warning-bg: #FFFBEB;
+  --vq-danger: #DC2626;
+  --vq-danger-bg: #FEF2F2;
+
+  --vq-radius-sm: 8px;
+  --vq-radius-md: 12px;
+  --vq-radius-lg: 16px;
+  --vq-radius-pill: 999px;
+
+  --vq-shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.04);
+  --vq-shadow-md: 0 2px 8px rgba(16, 24, 40, 0.06);
+  --vq-shadow-lg: 0 8px 24px rgba(16, 24, 40, 0.08);
+
+  --vq-font: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+}
+
+/* ============================================================
+   Base Content Wrapper
+   ============================================================ */
+.vq-content {
+  font-family: var(--vq-font);
+  color: var(--vq-text-primary);
+  background: var(--vq-bg);
+  padding: 32px 40px 64px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.vq-content h1,
+.vq-content h2,
+.vq-content h3 {
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+/* ============================================================
+   1. Top Bar / Hero
+   ============================================================ */
+.vq-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.vq-topbar__left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.vq-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  padding: 6px 14px;
+  border-radius: var(--vq-radius-pill);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.vq-eyebrow--dashboard {
+  background: var(--vq-blue-bg);
+  color: var(--vq-blue);
+}
+
+.vq-eyebrow i {
+  font-size: 12px;
+}
+
+.vq-topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.vq-topbar__bell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--vq-radius-md);
+  border: 1px solid var(--vq-border);
+  background: var(--vq-surface);
+  color: var(--vq-text-secondary);
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.vq-topbar__bell:hover {
+  background: var(--vq-surface-muted);
+  border-color: var(--vq-border-strong);
+}
+
+.vq-topbar__user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px 8px 10px;
+  border-radius: var(--vq-radius-md);
+  border: 1px solid var(--vq-border);
+  background: var(--vq-surface);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--vq-text-primary);
+  cursor: pointer;
+}
+
+.vq-topbar__user i:first-child {
+  font-size: 22px;
+  color: var(--vq-text-muted);
+}
+
+.vq-topbar__user i:last-child {
+  font-size: 11px;
+  color: var(--vq-text-muted);
+}
+
+/* ============================================================
+   2. Trip Analyzer Search Card
+   ============================================================ */
+.vq-analyzer {
+  margin-bottom: 40px;
+}
+
+.vq-analyzer__card {
+  background: var(--vq-surface);
+  border: 1px solid var(--vq-border);
+  border-radius: var(--vq-radius-lg);
+  box-shadow: var(--vq-shadow-md);
+  padding: 32px;
+}
+
+.vq-analyzer__head {
+  margin-bottom: 24px;
+}
+
+.vq-analyzer__head h2 {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--vq-text-primary);
+  margin-bottom: 6px;
+}
+
+.vq-analyzer__head p {
+  font-size: 14px;
+  color: var(--vq-text-secondary);
+  margin: 0;
+}
+
+.vq-form__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.vq-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.vq-field label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--vq-text-secondary);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+/* Style whatever input WTForms renders, without touching its markup */
+.vq-field input,
+.vq-field select,
+.vq-field textarea {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  font-family: var(--vq-font);
+  font-size: 14px;
+  color: var(--vq-text-primary);
+  background: var(--vq-surface-muted);
+  border: 1px solid var(--vq-border-strong);
+  border-radius: var(--vq-radius-sm);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  appearance: none;
+}
+
+.vq-field textarea {
+  height: auto;
+  padding-top: 10px;
+  resize: vertical;
+}
+
+.vq-field input:hover,
+.vq-field select:hover,
+.vq-field textarea:hover {
+  border-color: #C9CED6;
+}
+
+.vq-field input:focus,
+.vq-field select:focus,
+.vq-field textarea:focus {
+  background: var(--vq-surface);
+  border-color: var(--vq-blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.vq-form__submit {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.vq-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 22px;
+  font-family: var(--vq-font);
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: var(--vq-radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.vq-btn--primary {
+  background: var(--vq-blue);
+  color: #FFFFFF;
+  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
+}
+
+.vq-btn--primary:hover {
+  background: #1D4ED8;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
+}
+
+.vq-btn--primary:active {
+  transform: translateY(1px);
+}
+
+.vq-btn__icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* ============================================================
+   3. Results Section Layout
+   ============================================================ */
+.vq-results {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.vq-section__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.vq-section__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.vq-section__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--vq-radius-sm);
+  background: var(--vq-blue-bg);
+  color: var(--vq-blue);
+  font-size: 13px;
+}
+
+.vq-section__head h2 {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--vq-text-primary);
+}
+
+.vq-section__meta {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--vq-text-muted);
+}
+
+.vq-section--last {
+  margin-bottom: 8px;
+}
+
+.vq-empty {
+  padding: 24px;
+  text-align: center;
+  color: var(--vq-text-muted);
+  font-size: 14px;
+  background: var(--vq-surface-muted);
+  border: 1px dashed var(--vq-border-strong);
+  border-radius: var(--vq-radius-md);
+}
+
+/* Shared badge component */
+.vq-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--vq-radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.vq-badge--neutral {
+  background: var(--vq-surface-muted);
+  color: var(--vq-text-secondary);
+  border: 1px solid var(--vq-border-strong);
+}
+
+.vq-badge--score {
+  background: var(--vq-green-bg);
+  color: var(--vq-green);
+}
+
+.vq-badge--status {
+  background: var(--vq-success-bg);
+  color: var(--vq-success);
+}
+
+/* ============================================================
+   4. Flight Cards
+   ============================================================ */
+.vq-flight-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vq-flight-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--vq-surface);
+  border: 1px solid var(--vq-border);
+  border-radius: var(--vq-radius-md);
+  padding: 20px 24px;
+  box-shadow: var(--vq-shadow-sm);
+  transition: box-shadow 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+.vq-flight-card:hover {
+  box-shadow: var(--vq-shadow-lg);
+  border-color: var(--vq-border-strong);
+  transform: translateY(-2px);
+}
+
+.vq-flight-card__main {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex: 1;
+}
+
+.vq-flight-card__airline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--vq-text-primary);
+  min-width: 120px;
+}
+
+.vq-flight-card__airline-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--vq-cyan);
+  flex-shrink: 0;
+}
+
+.vq-flight-card__route {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.vq-flight-card__point {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 64px;
+}
+
+.vq-flight-card__point--end {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.vq-flight-card__time {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--vq-text-primary);
+}
+
+.vq-flight-card__city {
+  font-size: 12.5px;
+  color: var(--vq-text-muted);
+}
+
+.vq-flight-card__path {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 90px;
+}
+
+.vq-flight-card__line {
+  flex: 1;
+  height: 1px;
+  background: var(--vq-border-strong);
+}
+
+.vq-flight-card__plane {
+  width: 16px;
+  height: 16px;
+  color: var(--vq-cyan);
+  flex-shrink: 0;
+}
+
+.vq-flight-card__stub {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  padding-left: 24px;
+  border-left: 1px dashed var(--vq-border-strong);
+  min-width: 130px;
+}
+
+.vq-flight-card__stub-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--vq-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.vq-flight-card__price {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--vq-cyan);
+}
+
+/* ============================================================
+   5. Hotel Cards
+   ============================================================ */
+.vq-hotel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.vq-hotel-card {
+  background: var(--vq-surface);
+  border: 1px solid var(--vq-border);
+  border-radius: var(--vq-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--vq-shadow-sm);
+  transition: box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.vq-hotel-card:hover {
+  box-shadow: var(--vq-shadow-lg);
+  transform: translateY(-3px);
+}
+
+.vq-hotel-card__image {
+  position: relative;
+  height: 160px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--vq-green-bg);
+}
+
+.vq-hotel-card__rating {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: var(--vq-radius-pill);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--vq-text-primary);
+}
+
+.vq-star {
+  color: var(--vq-orange);
+  font-size: 12px;
+}
+
+.vq-hotel-card__body {
+  padding: 18px 20px 20px;
+}
+
+.vq-hotel-card__name {
+  font-size: 15.5px;
+  font-weight: 600;
+  color: var(--vq-text-primary);
+  margin-bottom: 4px;
+}
+
+.vq-hotel-card__location {
+  font-size: 13px;
+  color: var(--vq-text-muted);
+  margin: 0 0 14px;
+}
+
+.vq-hotel-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.vq-hotel-card__price {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--vq-green);
+}
+
+.vq-hotel-card__price small {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--vq-text-muted);
+}
+
+/* ============================================================
+   6. Weather Card
+   ============================================================ */
+.vq-weather-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 24px 40px;
+  background: var(--vq-surface);
+  border: 1px solid var(--vq-border);
+  border-radius: var(--vq-radius-lg);
+  padding: 28px 32px;
+  box-shadow: var(--vq-shadow-sm);
+}
+
+.vq-weather-card__primary {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.vq-weather-card__icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 68px;
+  height: 68px;
+  border-radius: var(--vq-radius-md);
+  background: var(--vq-orange-bg);
+}
+
+.vq-weather-card__icon {
+  font-size: 34px;
+  color: var(--vq-orange);
+}
+
+.vq-weather-card__temp {
+  display: block;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--vq-text-primary);
+  line-height: 1;
+}
+
+.vq-weather-card__condition {
+  display: block;
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--vq-text-secondary);
+}
+
+.vq-weather-card__stats {
+  grid-column: 2;
+  display: flex;
+  gap: 32px;
+}
+
+.vq-weather-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.vq-weather-stat__label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--vq-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.vq-weather-stat__value {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--vq-text-primary);
+}
+
+.vq-weather-card__note {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 20px;
+  border-top: 1px solid var(--vq-border);
+}
+
+.vq-weather-tip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13.5px;
+  color: var(--vq-text-secondary);
+}
+
+.vq-weather-tip i {
+  color: var(--vq-orange);
+  font-size: 14px;
+}
+
+/* ============================================================
+   7. Budget Card
+   ============================================================ */
+.vq-budget-card {
+  background: var(--vq-surface);
+  border: 1px solid var(--vq-border);
+  border-radius: var(--vq-radius-lg);
+  padding: 8px 28px;
+  box-shadow: var(--vq-shadow-sm);
+}
+
+.vq-budget-card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--vq-border);
+}
+
+.vq-budget-card__item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.vq-budget-card__label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--vq-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.vq-budget-card__name {
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--vq-text-primary);
+}
+
+.vq-budget-card__amount {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--vq-text-secondary);
+}
+
+.vq-budget-card__total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.vq-budget-card__total span:first-child {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--vq-text-primary);
+}
+
+.vq-budget-card__total-amount {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--vq-blue);
+}
+
+/* ============================================================
+   8. Recommendation Panel (Hero Insight Card)
+   ============================================================ */
+.vq-recommend-panel {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 32px;
+  background: linear-gradient(180deg, #FAFBFF 0%, #FFFFFF 100%);
+  border: 1px solid var(--vq-border);
+  border-radius: var(--vq-radius-lg);
+  padding: 32px;
+  box-shadow: var(--vq-shadow-md);
+}
+
+.vq-recommend-panel__score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding-right: 32px;
+  border-right: 1px solid var(--vq-border);
+}
+
+.vq-gauge {
+  --vq-score-pct: calc(var(--vq-score, 0) * 10%);
+  position: relative;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: conic-gradient(
+    var(--vq-blue) var(--vq-score-pct),
+    var(--vq-border) var(--vq-score-pct)
+  );
+}
+
+.vq-gauge__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  background: var(--vq-surface);
+}
+
+.vq-gauge__value {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--vq-text-primary);
+  line-height: 1;
+}
+
+.vq-gauge__max {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--vq-text-muted);
+  margin-top: 2px;
+}
+
+.vq-recommend-panel__body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.vq-recommend-panel__message {
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--vq-text-primary);
+  margin: 0;
+}
+
+.vq-recommend-panel__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.vq-recommend-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  background: var(--vq-surface-muted);
+  border: 1px solid var(--vq-border);
+  border-radius: var(--vq-radius-sm);
+}
+
+.vq-recommend-item__label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--vq-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.vq-recommend-item__value {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--vq-text-primary);
+  line-height: 1.4;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 1024px) {
+  .vq-content {
+    padding: 24px 24px 48px;
+  }
+
+  .vq-weather-card {
+    grid-template-columns: 1fr;
+  }
+
+  .vq-weather-card__stats {
+    grid-column: 1;
+  }
+
+  .vq-recommend-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .vq-recommend-panel__score {
+    border-right: none;
+    padding-right: 0;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--vq-border);
+  }
+}
+
+@media (max-width: 768px) {
+  .vq-content {
+    padding: 20px 16px 40px;
+  }
+
+  .vq-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .vq-analyzer__card {
+    padding: 24px 20px;
+  }
+
+  .vq-form__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vq-flight-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .vq-flight-card__main {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .vq-flight-card__stub {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-left: none;
+    border-top: 1px dashed var(--vq-border-strong);
+    padding-left: 0;
+    padding-top: 16px;
+    width: 100%;
+  }
+
+  .vq-hotel-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vq-budget-card {
+    padding: 8px 20px;
+  }
+}

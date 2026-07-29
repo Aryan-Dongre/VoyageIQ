@@ -1,0 +1,244 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Edit Target Trip{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/target_trip/create.css') }}">
+
+<div class="ctt-page">
+
+    <!-- Header Section -->
+    <div class="ctt-header">
+        <div class="ctt-header-text">
+            <h1 class="ctt-title">Edit Target Trip</h1>
+            <p class="ctt-subtitle">
+                Update your travel goal and adjust your preferences anytime.
+            </p>
+        </div>
+
+        <div class="ctt-header-actions">
+            <a href="{{ url_for('target_trip.target_trip_home') }}"
+               class="ctt-btn ctt-btn-outline">
+                <span class="ctt-btn-icon">&larr;</span>
+                Back to Target Trips
+            </a>
+        </div>
+    </div>
+
+    <div class="ctt-layout">
+
+        <!-- Main Form Container -->
+        <div class="ctt-form-card">
+
+            <div class="ctt-form-card-head">
+                <h2 class="ctt-form-title">
+                    Edit Target Trip Details
+                </h2>
+
+                <p class="ctt-form-subtitle">
+                    Update your travel preferences and budget ranges.
+                </p>
+            </div>
+
+            <form method="POST" class="ctt-form">
+
+                {{ form.hidden_tag() }}
+
+                <!-- Route Information -->
+                <div class="ctt-fieldset">
+
+                    <div class="ctt-fieldset-head">
+                        <h3 class="ctt-fieldset-title">
+                            Route Information
+                        </h3>
+                    </div>
+
+                    <div class="ctt-grid-2">
+
+                        <div class="ctt-field">
+                            {{ form.origin.label(class="ctt-label") }}
+                            {{ form.origin(class="ctt-input") }}
+
+                            {% for error in form.origin.errors %}
+                                <small class="ctt-error">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+
+                        <div class="ctt-field">
+                            {{ form.destination.label(class="ctt-label") }}
+                            {{ form.destination(class="ctt-input") }}
+
+                            {% for error in form.destination.errors %}
+                                <small class="ctt-error">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Traveler Preferences -->
+                <div class="ctt-fieldset">
+
+                    <div class="ctt-fieldset-head">
+                        <h3 class="ctt-fieldset-title">
+                            Traveler Preferences
+                        </h3>
+                    </div>
+
+                    <div class="ctt-grid-2">
+
+                        <div class="ctt-field">
+                            {{ form.travelers.label(class="ctt-label") }}
+                            {{ form.travelers(class="ctt-input") }}
+
+                            {% for error in form.travelers.errors %}
+                                <small class="ctt-error">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+
+                        <div class="ctt-field">
+                            {{ form.travel_class.label(class="ctt-label") }}
+                            {{ form.travel_class(class="ctt-input ctt-select") }}
+
+                            {% for error in form.travel_class.errors %}
+                                <small class="ctt-error">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Travel Window -->
+                <div class="ctt-fieldset">
+
+                    <div class="ctt-fieldset-head">
+                        <h3 class="ctt-fieldset-title">
+                            Travel Window
+                        </h3>
+                    </div>
+
+                    <div class="ctt-grid-3">
+
+                        <div class="ctt-field">
+                            {{ form.start_month.label(class="ctt-label") }}
+                            {{ form.start_month(class="ctt-input ctt-select") }}
+
+                            {% for error in form.start_month.errors %}
+                                <small class="ctt-error">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+
+                        <div class="ctt-field">
+                            {{ form.end_month.label(class="ctt-label") }}
+                            {{ form.end_month(class="ctt-input ctt-select") }}
+
+                            {% for error in form.end_month.errors %}
+                                <small class="ctt-error">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+
+                        <div class="ctt-field">
+                            {{ form.travel_year.label(class="ctt-label") }}
+                            {{ form.travel_year(class="ctt-input") }}
+
+                            {% for error in form.travel_year.errors %}
+                                <small class="ctt-error">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Flight Budget -->
+                <div class="ctt-fieldset">
+
+                    <div class="ctt-fieldset-head">
+                        <h3 class="ctt-fieldset-title">
+                            Flight Budget Range
+                        </h3>
+                    </div>
+
+                    <div class="ctt-grid-2">
+
+                        <div class="ctt-field">
+                            {{ form.flight_min_price.label(class="ctt-label") }}
+                            {{ form.flight_min_price(class="ctt-input") }}
+
+                            {% for error in form.flight_min_price.errors %}
+                                <small class="ctt-error">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+
+                        <div class="ctt-field">
+                            {{ form.flight_max_price.label(class="ctt-label") }}
+                            {{ form.flight_max_price(class="ctt-input") }}
+
+                            {% for error in form.flight_max_price.errors %}
+                                <small class="ctt-error">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Hotel Budget -->
+                <div class="ctt-fieldset">
+
+                    <div class="ctt-fieldset-head">
+                        <h3 class="ctt-fieldset-title">
+                            Hotel Budget Range
+                        </h3>
+                    </div>
+
+                    <div class="ctt-grid-2">
+
+                        <div class="ctt-field">
+                            {{ form.hotel_min_price.label(class="ctt-label") }}
+                            {{ form.hotel_min_price(class="ctt-input") }}
+
+                            {% for error in form.hotel_min_price.errors %}
+                                <small class="ctt-error">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+
+                        <div class="ctt-field">
+                            {{ form.hotel_max_price.label(class="ctt-label") }}
+                            {{ form.hotel_max_price(class="ctt-input") }}
+
+                            {% for error in form.hotel_max_price.errors %}
+                                <small class="ctt-error">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Form Actions -->
+                <div class="ctt-form-actions">
+
+                    <button type="submit"
+                            class="ctt-btn ctt-btn-primary">
+                        Update Target Trip
+                    </button>
+
+                    <a href="{{ url_for('target_trip.target_trip_home') }}"
+                       class="ctt-btn ctt-btn-cancel">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

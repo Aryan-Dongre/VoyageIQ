@@ -1,0 +1,553 @@
+
+:root {
+  --vq-navy: #0B1F3A;
+  --vq-navy-light: #16294D;
+  --vq-sky: #2E6FF2;
+  --vq-sky-light: #EAF1FF;
+  --vq-amber: #F5A623;
+  --vq-amber-dark: #D98A0A;
+  --vq-bg: #FAFAF8;
+  --vq-white: #FFFFFF;
+  --vq-text: #14213D;
+  --vq-text-secondary: #5B6472;
+  --vq-border: #E4E7EC;
+  --vq-success: #1E8E5A;
+  --vq-shadow-sm: 0 2px 8px rgba(11, 31, 58, 0.06);
+  --vq-shadow-md: 0 12px 32px rgba(11, 31, 58, 0.10);
+  --vq-shadow-lg: 0 24px 60px rgba(11, 31, 58, 0.16);
+
+  --vq-font-display: "Fraunces", Georgia, serif;
+  --vq-font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --vq-font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --vq-radius-sm: 10px;
+  --vq-radius-md: 16px;
+  --vq-radius-lg: 24px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--vq-bg);
+  font-family: var(--vq-font-body);
+  color: var(--vq-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--vq-sky);
+}
+
+/*  Hero + Search */
+
+.vq-hero {
+  background: radial-gradient(ellipse at top left, var(--vq-navy-light) 0%, var(--vq-navy) 55%, #081527 100%);
+  padding: 4.5rem 0 8rem;
+  position: relative;
+  overflow: hidden;
+  margin-top:80px;
+}
+
+.vq-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.35) 0, transparent 100%),
+    radial-gradient(1px 1px at 65% 15%, rgba(255,255,255,0.25) 0, transparent 100%),
+    radial-gradient(1.5px 1.5px at 85% 45%, rgba(255,255,255,0.3) 0, transparent 100%),
+    radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.2) 0, transparent 100%);
+  pointer-events: none;
+}
+
+.vq-eyebrow {
+  color: var(--vq-amber);
+  font-family: var(--vq-font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.vq-hero-title {
+  font-family: var(--vq-font-display);
+  font-weight: 600;
+  font-optical-sizing: auto;
+  color: var(--vq-white);
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin-bottom: 1rem;
+  max-width: 14ch;
+}
+
+.vq-hero-sub {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 1.05rem;
+  max-width: 44ch;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+/* Search card floats over the hero, Airbnb-style */
+.vq-search-card {
+  background: var(--vq-white);
+  border-radius: var(--vq-radius-lg);
+  box-shadow: var(--vq-shadow-lg);
+  padding: 1.75rem 1.75rem 1.5rem;
+  margin-top: 2.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.vq-search-row-two {
+  margin-top: 0.25rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--vq-border);
+}
+
+.vq-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--vq-text-secondary);
+  margin-bottom: 0.4rem;
+}
+
+.vq-input,
+.vq-input.form-select {
+  border: 1.5px solid var(--vq-border);
+  border-radius: var(--vq-radius-sm);
+  padding: 0.65rem 0.85rem;
+  font-family: var(--vq-font-body);
+  font-size: 0.95rem;
+  color: var(--vq-text);
+  background-color: var(--vq-white);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.vq-input:focus {
+  border-color: var(--vq-sky);
+  box-shadow: 0 0 0 3px var(--vq-sky-light);
+  outline: none;
+}
+
+.vq-input.is-invalid {
+  border-color: #D64545;
+}
+
+.invalid-feedback {
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+
+.vq-btn-search {
+  background: var(--vq-sky);
+  color: var(--vq-white);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: var(--vq-radius-sm);
+  padding: 0.7rem 1rem;
+  border: none;
+  transition: background 0.15s ease, transform 0.1s ease;
+  height: 100%;
+}
+
+.vq-btn-search:hover {
+  background: #245BD1;
+  color: var(--vq-white);
+  transform: translateY(-1px);
+}
+
+.vq-btn-search:active {
+  transform: translateY(0);
+}
+
+/* 
+   Results
+    */
+
+.vq-results {
+  padding: 3.5rem 0 6rem;
+  margin-top: -3.5rem;
+}
+
+.vq-results-head {
+  margin-bottom: 1.75rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1rem;
+}
+
+.vq-results-title {
+  font-family: var(--vq-font-display);
+  font-weight: 600;
+  font-size: 1.6rem;
+  color: var(--vq-text);
+  margin-bottom: 0.25rem;
+}
+
+.vq-results-sub {
+  color: var(--vq-text-secondary);
+  font-size: 0.92rem;
+  margin-bottom: 0;
+}
+
+.vq-flight-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* --- Flight card ------------------------------------------------------- */
+
+.vq-flight-card {
+  background: var(--vq-white);
+  border: 1px solid var(--vq-border);
+  border-radius: var(--vq-radius-md);
+  box-shadow: var(--vq-shadow-sm);
+  padding: 1.25rem 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr auto;
+  gap: 1.5rem;
+  align-items: center;
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  animation: vqCardIn 0.35s ease both;
+}
+
+.vq-flight-card:hover {
+  box-shadow: var(--vq-shadow-md);
+  transform: translateY(-2px);
+  border-color: #D7E2F5;
+}
+
+.vq-flight-card.vq-hidden {
+  display: none;
+}
+
+@keyframes vqCardIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.vq-card-airline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.vq-airline-name {
+  font-weight: 600;
+  font-size: 0.98rem;
+  color: var(--vq-text);
+}
+
+.vq-flight-number {
+  font-family: var(--vq-font-mono);
+  font-size: 0.78rem;
+  color: var(--vq-text-secondary);
+  letter-spacing: 0.03em;
+}
+
+.vq-cabin-pill {
+  display: inline-block;
+  width: fit-content;
+  background: var(--vq-sky-light);
+  color: var(--vq-sky);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  margin-top: 0.15rem;
+}
+
+/* --- Route / signature flight-path element ------------------------------ */
+
+.vq-card-route {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: start;
+  gap: 1rem;
+}
+
+.vq-endpoint {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.vq-endpoint-end {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.vq-time {
+  font-family: var(--vq-font-mono);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--vq-text);
+}
+
+.vq-code {
+  font-family: var(--vq-font-mono);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--vq-sky);
+}
+
+.vq-airport-name {
+  font-size: 0.74rem;
+  color: var(--vq-text-secondary);
+  max-width: 16ch;
+  line-height: 1.3;
+}
+
+.vq-endpoint-end .vq-airport-name {
+  margin-left: auto;
+}
+
+.vq-path {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
+  padding-top: 0.15rem;
+}
+
+.vq-duration {
+  font-family: var(--vq-font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--vq-text-secondary);
+  margin-bottom: 0.35rem;
+}
+
+.vq-path-line {
+  position: relative;
+  width: 100%;
+  height: 1px;
+  border-top: 1.5px dashed #C7D2E3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vq-dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--vq-sky);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.vq-dot-start { left: 0; }
+.vq-dot-end { right: 0; }
+
+.vq-plane {
+  background: var(--vq-white);
+  color: var(--vq-sky);
+  font-size: 0.85rem;
+  transform: rotate(90deg);
+  padding: 0 0.35rem;
+  line-height: 1;
+}
+
+.vq-nonstop {
+  font-size: 0.68rem;
+  color: var(--vq-text-secondary);
+  margin-top: 0.35rem;
+  letter-spacing: 0.02em;
+}
+
+/* --- Price panel --------------------------------------------------------- */
+
+.vq-card-price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  padding-left: 1.25rem;
+  border-left: 1px dashed var(--vq-border);
+  min-width: 120px;
+}
+
+.vq-price-amount {
+  font-family: var(--vq-font-mono);
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: var(--vq-navy);
+}
+
+.vq-price-currency {
+  font-size: 0.7rem;
+  color: var(--vq-text-secondary);
+  margin-top: 0.2rem;
+}
+
+/* --- View more ------------------------------------------------------------ */
+
+.vq-view-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.25rem;
+}
+
+.vq-btn-outline {
+  background: var(--vq-white);
+  border: 1.5px solid var(--vq-navy);
+  color: var(--vq-navy);
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 0.65rem 1.5rem;
+  border-radius: 999px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.vq-btn-outline:hover {
+  background: var(--vq-navy);
+  color: var(--vq-white);
+}
+
+#vq-view-more-count {
+  color: inherit;
+  opacity: 0.65;
+  font-size: 0.85em;
+  margin-left: 0.2rem;
+}
+
+/* --- Empty state ----------------------------------------------------------- */
+
+.vq-empty-state {
+  text-align: center;
+  padding: 4rem 1rem;
+  background: var(--vq-white);
+  border: 1px dashed var(--vq-border);
+  border-radius: var(--vq-radius-lg);
+}
+
+.vq-empty-state h2 {
+  font-family: var(--vq-font-display);
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.vq-empty-state p {
+  color: var(--vq-text-secondary);
+  margin-bottom: 0;
+}
+
+/*Airport suggestions*/
+
+.airport-suggestions{
+  position:absolute;
+  top:100%;
+  left:0;
+  right:0;
+
+  background:white;
+  border: 1px solid #ddd;
+  border-radius:12px;
+  max-height:250;
+
+  overflow-y:auto;
+  z-index:1000;
+
+  display:none
+}
+
+.airport-item{
+  padding: 12px 15px;
+  cursor:pointer;
+}
+
+.airport-item:hover{
+  background:#f5f7ff;
+}
+
+
+/*  Responsive */
+
+@media (max-width: 991.98px) {
+  .vq-search-card {
+    padding: 1.5rem;
+  }
+
+  .vq-flight-card {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .vq-card-price {
+    align-items: flex-start;
+    text-align: left;
+    border-left: none;
+    border-top: 1px dashed var(--vq-border);
+    padding-left: 0;
+    padding-top: 0.85rem;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .vq-card-route {
+    grid-template-columns: 1fr auto 1fr;
+  }
+
+  .vq-airport-name {
+    max-width: 12ch;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .vq-hero {
+    padding: 3rem 0 6.5rem;
+  }
+
+  .vq-hero-title {
+    max-width: none;
+  }
+
+  .vq-card-route {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    text-align: left;
+  }
+
+  .vq-endpoint-end {
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .vq-endpoint-end .vq-airport-name {
+    margin-left: 0;
+  }
+
+  .vq-path {
+    flex-direction: row;
+    justify-content: space-between;
+    min-width: 0;
+  }
+
+  .vq-path-line {
+    width: 70%;
+  }
+
+  .vq-duration {
+    margin-bottom: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vq-flight-card {
+    animation: none;
+    transition: none;
+  }
+}

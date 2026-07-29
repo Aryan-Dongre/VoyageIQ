@@ -1,0 +1,405 @@
+:root {
+  --vq-bg: #ffffff;
+  --vq-bg-alt: #f6f7f9;
+  --vq-bg-deep: #eef0f3;
+  --vq-text: #13161a;
+  --vq-text-muted: #5b6270;
+  --vq-accent: #2563ed;
+  --vq-accent-dark: #1f54c4;
+  --vq-accent-soft: #eaf1ff;
+  --vq-border: #e6e8eb;
+
+  --vq-radius-sm: 10px;
+  --vq-radius-md: 16px;
+  --vq-radius-lg: 24px;
+
+  --vq-shadow-sm: 0 1px 2px rgba(20, 20, 30, 0.04), 0 1px 1px rgba(20, 20, 30, 0.03);
+  --vq-shadow-md: 0 8px 24px rgba(20, 20, 30, 0.06), 0 2px 8px rgba(20, 20, 30, 0.04);
+  --vq-shadow-lg: 0 24px 60px rgba(20, 20, 30, 0.10), 0 6px 16px rgba(20, 20, 30, 0.06);
+
+  --vq-font-display: 'Manrope', 'Inter', sans-serif;
+  --vq-font-body: 'Inter', sans-serif;
+
+  --vq-space-1: 8px;
+  --vq-space-2: 16px;
+  --vq-space-3: 24px;
+  --vq-space-4: 40px;
+  --vq-space-5: 64px;
+  --vq-space-6: 96px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--vq-font-body);
+  color: var(--vq-text);
+  background: var(--vq-bg);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--vq-font-display);
+  letter-spacing: -0.02em;
+  color: var(--vq-text);
+}
+
+a {
+  text-decoration: none;
+}
+
+/* ---------- NAVBAR ---------- */
+/* ===== VoyageIQ Navbar — premium SaaS redesign ===== */
+
+.vq-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+  font-family: 'Inter', sans-serif;
+}
+
+.vq-navbar-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+}
+
+/* Logo */
+.vq-logo {
+  text-decoration: none;
+}
+
+.vq-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vq-brand-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: #EEF2FF;
+  color: #4F46E5;
+}
+
+.vq-brand-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0F172A;
+  letter-spacing: -0.01em;
+}
+
+/* Center nav menu — true centering, independent of side elements */
+.vq-nav-menu {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.vq-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #4B5563;
+  text-decoration: none;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.vq-nav-icon {
+  font-size: 0.85rem;
+}
+
+.vq-nav-link:hover {
+  background: #F3F4F6;
+  color: #111827;
+}
+
+/* Per-item active colors */
+.vq-nav-link--home.active {
+  background: #EAF2FF;
+  color: #2563EB;
+}
+
+.vq-nav-link--flights.active {
+  background: #E0FBFC;
+  color: #0891B2;
+}
+
+.vq-nav-link--hotels.active {
+  background: #E9F9F0;
+  color: #16A34A;
+}
+
+.vq-nav-link--weather.active {
+  background: #FFF3E6;
+  color: #EA580C;
+}
+
+.vq-nav-link--contact.active {
+  background: #F3E8FF;
+  color: #9333EA;
+}
+
+/* Login button */
+.vq-login-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 20px;
+  border-radius: 999px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  color: #0F172A;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: all 0.18s ease;
+}
+
+.vq-login-btn:hover {
+  border-color: #CBD5E1;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  transform: translateY(-1px);
+  color: #0F172A;
+}
+
+.vq-login-btn--mobile {
+  display: none;
+}
+
+/* Hamburger toggle */
+.vq-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+.vq-toggle-bar {
+  width: 20px;
+  height: 2px;
+  background: #0F172A;
+  border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.vq-toggle[aria-expanded="true"] .vq-toggle-bar:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.vq-toggle[aria-expanded="true"] .vq-toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.vq-toggle[aria-expanded="true"] .vq-toggle-bar:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+
+
+/* ---------- BUTTONS (shared) ---------- */
+.vq-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.98rem;
+  padding: 13px 28px;
+  border-radius: 999px;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.vq-btn-primary {
+  background: var(--vq-text);
+  color: #fff;
+}
+
+.vq-btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--vq-shadow-md);
+  background: #000;
+  color: #fff;
+}
+
+.vq-btn-secondary {
+  background: #fff;
+  color: var(--vq-text);
+  border: 1px solid var(--vq-border);
+}
+
+.vq-btn-secondary:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--vq-shadow-md);
+  border-color: #d7dadf;
+}
+
+.vq-btn-accent {
+  background: var(--vq-accent);
+  color: #fff;
+}
+
+.vq-btn-accent:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 32px rgba(47, 111, 237, 0.30);
+  background: var(--vq-accent-dark);
+  color: #fff;
+}
+
+/* ---------- SCROLL REVEAL ---------- */
+.vq-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .7s cubic-bezier(.2, .6, .2, 1), transform .7s cubic-bezier(.2, .6, .2, 1);
+}
+
+.vq-reveal.vq-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vq-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ---------- FOOTER ---------- */
+.vq-footer {
+  background: var(--vq-bg-deep);
+  border-top: 1px solid var(--vq-border);
+  padding: var(--vq-space-5) 0 var(--vq-space-3);
+}
+
+.vq-footer-logo {
+  font-family: var(--vq-font-display);
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--vq-text);
+}
+
+.vq-footer-link {
+  color: var(--vq-text-muted);
+  font-size: 0.92rem;
+  font-weight: 500;
+  margin-right: 28px;
+  transition: color .2s ease;
+}
+
+.vq-footer-link:hover {
+  color: var(--vq-text);
+}
+
+.vq-footer-bottom {
+  border-top: 1px solid var(--vq-border);
+  margin-top: var(--vq-space-4);
+  padding-top: var(--vq-space-2);
+  font-size: 0.82rem;
+  color: var(--vq-text-muted);
+}
+
+
+@media (max-width: 991.98px) {
+
+  .vq-navbar-inner {
+    height: 60px;
+  }
+
+  .vq-toggle {
+    display: flex;
+  }
+
+  .vq-login-btn--desktop {
+    display: none;
+  }
+
+  .vq-nav-collapse {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 12px;
+    right: 12px;
+    background: #FFFFFF;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: 16px;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+    padding: 10px;
+  }
+
+  .vq-nav-menu {
+    position: static;
+    transform: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+  }
+
+  .vq-nav-link {
+    padding: 11px 14px;
+    border-radius: 10px;
+    width: 100%;
+  }
+
+  .vq-login-btn--mobile {
+    display: flex;
+    width: 100%;
+    margin-top: 8px;
+    padding: 10px 20px;
+  }
+}
+
+/* Force menu to always render as a row on desktop, regardless of Bootstrap's collapse state */
+@media (min-width: 992px) {
+
+  .vq-nav-collapse.collapse:not(.show),
+  .vq-nav-collapse.collapse.show {
+    display: flex !important;
+    position: static;
+    align-items: center;
+  }
+}
