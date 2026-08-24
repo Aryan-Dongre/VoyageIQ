@@ -11,7 +11,7 @@ def get_db_connection():
             user=current_app.config["DB_USER"],
             password=current_app.config["DB_PASSWORD"],
             port=current_app.config["DB_PORT"],
-
+            sslmode='require',   # Add this line for azure database connection
             cursor_factory=RealDictCursor
         )
         return connection

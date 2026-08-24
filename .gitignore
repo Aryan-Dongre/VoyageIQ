@@ -6,6 +6,10 @@ env/
 # Environment variables
 .env
 
+# Database backups
+database/*.database_backup.sql
+
+
 # Python cache
 __pycache__/
 *.py[cod]
