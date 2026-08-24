@@ -7,7 +7,7 @@ env/
 .env
 
 # Database backups
-database/*.database_backup.sql
+database/database_backup.sql
 
 
 # Python cache
