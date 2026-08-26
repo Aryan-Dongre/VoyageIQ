@@ -5,13 +5,17 @@ load_dotenv()
 
 
 def get_azure_secret(secret_name):
-    from azure.identity import AzureCliCredential
+    # from azure.identity import AzureCliCredential    
+    # AzureCliCredential is Uses the Azure CLI login, mainly for local development.
+    
+    from azure.identity import DefaultAzureCredential
+    # DefaultAzureCredentia is use for Flexible authentication for local + Azure environments
     from azure.keyvault.secrets import SecretClient
 
     key_vault_url = os.getenv("AZURE_KEY_VAULT_URL")
 
-    credential = AzureCliCredential()
-
+    # credential = AzureCliCredential()
+    credential = DefaultAzureCredential()
     client = SecretClient(
         vault_url=key_vault_url, 
         credential=credential
