@@ -8,6 +8,11 @@ class DashboardService:
     
     def analyze_trip(self, form):
 
+        budget_data = None
+        trip_score = None
+        recommendation = None
+        weather_data = None
+
         search_data = {
             "origin": form.origin.data,
             "destination": form.destination.data,
@@ -17,8 +22,8 @@ class DashboardService:
             "travel_class": form.travel_class.data,
             "trip_type": form.trip_type.data,
 
-            # for hotel
-            "rooms":1
+            # For hotel
+            "rooms": 1
         }
 
         flight_api = FlightAPI()
@@ -26,59 +31,110 @@ class DashboardService:
         weather_api = WeatherAPI()
         weather_service = WeatherService()
 
-        # Flight part
-        try :
+        # =========================
+        # Flight
+        # =========================
+
+        try:
+
             flights = flight_api.search_flights(search_data)
             flights = flights[:3]
 
-        except Exception:
+        except Exception as e:
+
+            print("Flight API Error:", e)
             flights = []
 
-        # Hotel part
+        # =========================
+        # Hotel
+        # =========================
+
         try:
+
             hotels = hotel_api.search_hotels(search_data)
             hotels = hotels[:3]
-        
-        except Exception:
-            hotels=[]    
 
-        # Weather part
+        except Exception as e:
+
+            print("Hotel API Error:", e)
+            hotels = []
+
+        # =========================
+        # Weather
+        # =========================
+
         try:
-            weather_data = weather_api.search_weather(search_data["destination"])
+
+            weather_data = weather_api.search_weather(
+                search_data["destination"]
+            )
 
             if weather_data:
+
                 current_weather = weather_data["current_weather"]
 
                 current_weather["weather_condition"] = (
-                             weather_service.get_weather_condition(
-                               current_weather["weather_code"]
-                           )
+                    weather_service.get_weather_condition(
+                        current_weather["weather_code"]
+                    )
                 )
 
-                current_weather["weather_icon"] = (weather_service.get_weather_icon(current_weather["weather_code"]))
+                current_weather["weather_icon"] = (
+                    weather_service.get_weather_icon(
+                        current_weather["weather_code"]
+                    )
+                )
 
-                weather_data["recommendations"] = (weather_service.generate_recommendations(current_weather,weather_data["forecast"]))
+                weather_data["recommendations"] = (
+                    weather_service.generate_recommendations(
+                        current_weather,
+                        weather_data["forecast"]
+                    )
+                )
 
-                budget_data  = self.caluculate_budget(flights, hotels)
+        except Exception as e:
 
-                trip_score = self.calculate_trip_score(weather_data, budget_data)
-
-                recommendation = self.generate_recommendation(trip_score, budget_data, weather_data)
-
-        except Exception:
+            print("Weather API Error:", e)
             weather_data = None
-            budget_data = None
-            trip_score = None
-            recommendation = None
+
+        # =========================
+        # Budget
+        # =========================
+
+        budget_data = self.caluculate_budget(
+            flights,
+            hotels
+        )
+
+        # =========================
+        # Trip Score
+        # =========================
+
+        trip_score = self.calculate_trip_score(
+            weather_data,
+            budget_data
+        )
+
+        # =========================
+        # Recommendation
+        # =========================
+
+        if budget_data and weather_data:
+
+            recommendation = self.generate_recommendation(
+                trip_score,
+                budget_data,
+                weather_data
+            )
 
         return {
-                "flights": flights,
-                "hotels": hotels,
-                "weather": weather_data,
-                "budget": budget_data,
-                "trip_score": trip_score,
-                "recommendation": recommendation
-            }
+            "flights": flights,
+            "hotels": hotels,
+            "weather": weather_data,
+            "budget": budget_data,
+            "trip_score": trip_score,
+            "recommendation": recommendation
+        }
 
     def caluculate_budget(self, flights, hotels):
 

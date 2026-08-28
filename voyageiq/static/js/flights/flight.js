@@ -105,28 +105,30 @@
 
   async function fetchAirports(keyword) {
 
-    const urls = [
-        `/dashboard/airport/search?q=${encodeURIComponent(keyword)}`,
-        `/airports/search?q=${encodeURIComponent(keyword)}`
-    ];
+    const isDashboard = window.location.pathname.startsWith("/dashboard");
 
-    for (const url of urls) {
+    const url = isDashboard
+      ? `/dashboard/airport/search?q=${encodeURIComponent(keyword)}`
+      : `/flight/airports/search?q=${encodeURIComponent(keyword)}`;
 
-        try {
+    try {
 
-            const response = await fetch(url);
+      const response = await fetch(url);
 
-            if (response.ok) {
-                return await response.json();
-            }
+      if (response.ok) {
+        return await response.json();
+      }
 
-        } catch (error) {
-            console.log(`Failed: ${url}`);
-        }
+      console.error(`Airport search failed: ${response.status}`);
+
+    } catch (error) {
+
+      console.error(`Failed to fetch airports:`, error);
+
     }
 
     return [];
-}
+  }
 
   function setupAirportSearch(inputId, suggestionId) {
 

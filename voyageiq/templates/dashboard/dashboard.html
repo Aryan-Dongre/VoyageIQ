@@ -61,12 +61,18 @@
         <div class="vq-form__grid">
           <div class="vq-field">
             <label for="{{ form.origin.id }}">Origin</label>
-            {{ form.origin }}
+            {{ form.origin(
+              id="origin-input",
+              autocomplete="off"
+            ) }}
           </div>
 
           <div class="vq-field">
             <label for="{{ form.destination.id }}">Destination</label>
-            {{ form.destination }}
+            {{ form.destination(
+              id="destination-input",
+              autocomplete="off"
+          ) }}
           </div>
 
           <div class="vq-field">
@@ -352,6 +358,10 @@
 
   </div>
   {% endif %}
+
+  {% block extra_js %}
+<script src="{{ url_for('static', filename='js/dashboard/dashboard.js') }}"></script>
+{% endblock %}
 
 </div>
 {% endblock %}
