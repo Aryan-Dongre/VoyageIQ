@@ -63,9 +63,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_69440D431A4E477BA0711EBE1E4C2529 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_8877826C5EEB4666AF908E41D4148C10 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_15B8ECA8DC524B21A403B3AC86FA6933 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_050287C7B236483A8DBEACC2EE4504F7 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_C3A7862C0FDB476F9EBF17E1246DDFF3 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_636253A80F1844C39802B923DB5B0329 }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
@@ -73,5 +73,4 @@ jobs:
         with:
           app-name: 'voyageiq'
           slot-name: 'Production'
-          startup-command: 'gunicorn --bind=0.0.0.0:8000 --timeout 600 app:app'
           
