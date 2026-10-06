@@ -47,3 +47,6 @@ class Config:
     # API KEYS
     SERPAPI_API_KEY= get_secret("SERPAPI_API_KEY", "VOYAGEIQ-SERPAPI-KEY")
     WEATHER_API= os.getenv("WEATHER_API")
+
+     # Azure Functions URL
+    AIRPORT_API_URL = os.getenv("AIRPORT_API_URL", "")

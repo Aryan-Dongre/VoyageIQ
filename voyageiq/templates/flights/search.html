@@ -243,6 +243,11 @@
 </main>
 
 {% block extra_js %}
+
+<script>
+    window.VOYAGEIQ_AIRPORT_API_URL = "{{ config['AIRPORT_API_URL'] }}";
+</script>
+
 <script src="{{ url_for('static', filename='js/flights/flight.js') }}"></script>
 {% endblock %}
 

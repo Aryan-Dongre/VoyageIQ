@@ -3,6 +3,8 @@
   "use strict";
 
   var BATCH_SIZE = 5;
+  var AIRPORT_API_URL =
+    window.VOYAGEIQ_AIRPORT_API_URL || "http://localhost:7071";
 
   document.addEventListener("DOMContentLoaded", function () {
     initViewMore();
@@ -103,28 +105,28 @@
     );
   }
 
+  /*Airport Search Part*/
+
   async function fetchAirports(keyword) {
-
-    const isDashboard = window.location.pathname.startsWith("/dashboard");
-
-    const url = isDashboard
-      ? `/dashboard/airport/search?q=${encodeURIComponent(keyword)}`
-      : `/flight/airports/search?q=${encodeURIComponent(keyword)}`;
+    const url =
+      `${AIRPORT_API_URL}/api/airports?q=${encodeURIComponent(keyword)}`;
 
     try {
-
       const response = await fetch(url);
 
       if (response.ok) {
         return await response.json();
       }
 
-      console.error(`Airport search failed: ${response.status}`);
+      console.error(
+        `Airport search failed: ${response.status}`
+      );
 
     } catch (error) {
-
-      console.error(`Failed to fetch airports:`, error);
-
+      console.error(
+        "Failed to fetch airports:",
+        error
+      );
     }
 
     return [];

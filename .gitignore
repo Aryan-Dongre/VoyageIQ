@@ -15,8 +15,9 @@ __pycache__/
 *.py[cod]
 
 # IDE files
-.vscode/
+
 .idea/
+.vscode/
 
 # OS files
 .DS_Store
@@ -29,3 +30,10 @@ htmlcov/
 
 # Logs
 *.log
+
+# Azurite local storage
+AzuriteConfig
+__azurite_db_*.json
+__blobstorage__/
+__queuestorage__/
+

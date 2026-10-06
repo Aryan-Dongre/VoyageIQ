@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+
+# Local Azure Functions settings
+local.settings.json
+
+# Azurite local storage
+__blobstorage__/
+__queuestorage__/
+__azurite_db_*.json
+
+# Python packages
+.python_packages/
+
+# Environment files
+.env
+.env.*
+
+# Git
+.git/
+.github/
+
+# Documentation / local files
+README.md
