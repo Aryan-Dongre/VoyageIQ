@@ -14,7 +14,8 @@ app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
 
 # HOTEL SEARCH
 
-@app.route(route="hotels", methods=["GET", "POST"])
+@app.route(route="hotels", methods=["GET", "POST"],
+           auth_level=func.AuthLevel.ANONYMOUS)
 def hotels(req: func.HttpRequest) -> func.HttpResponse:
     try:
         payload = (
