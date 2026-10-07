@@ -3,26 +3,22 @@ import requests
 class HotelAPI:
 
     def __init__(self):
-        self.api_key = current_app.config["SERPAPI_API_KEY"]
-        self.base_url = "https://serpapi.com/search.json"
+        self.base_url = current_app.config["HOTEL_API_URL"]
+        
 
     def search_hotels(self, search_data):
 
         params = {  # to send the data to the API in its format
-            "engine": "google_hotels",
-            "q": search_data["destination"],
-            "gl": "in",
-            "currency": "INR",
-            "check_in_date": str(search_data["departure_date"]),  # Api string formate me date leta hai
+            "destination": search_data["destination"],
+            "check_in_date": str(search_data["departure_date"]),
             "check_out_date": str(search_data["return_date"]),
             "rooms": search_data["rooms"],
-            "adults": search_data["adults"],
-            "api_key": self.api_key
+            "adults": search_data["adults"]
         }    
 
         try:
             response = requests.get(
-                self.base_url,
+                f"{self.base_url}/api/hotels",
                 params=params,
                 timeout=30)
             
@@ -30,16 +26,19 @@ class HotelAPI:
 
             data = response.json()
 
-            return self._extract_hotels(
-                   data,
-                    search_data["destination"])
+            return data.get("hotels", [])
         
         except requests.RequestException as e:
             current_app.logger.error(f"Hotel API request failed: {e}")
             return []
-        
+
+
+        except (ValueError, TypeError) as e:
+            current_app.logger.error(f"Invalid Hotel Function response: {e}")
+            return []
+
         except Exception as e:
-            current_app.logger.error(f"Error processing hotel API response: {e}")
+            current_app.logger.error(f"Error processing hotel function response: {e}")
             return []
         
     def _extract_hotels(self, data, destination):   # this function is use to extracct the use full information from the API key 
