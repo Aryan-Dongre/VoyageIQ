@@ -9,6 +9,7 @@ import requests
 from models.airport_model import search_airports
 
 
+
 app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
 
 
@@ -46,7 +47,7 @@ def hotels(req: func.HttpRequest) -> func.HttpResponse:
             {"error": "Hotel search is not configured."},
             500
         )
-
+    # Prepare parameters for the SERPAPI request
     params = {
         "engine": "google_hotels",
         "q": payload["destination"].strip(),
@@ -61,7 +62,7 @@ def hotels(req: func.HttpRequest) -> func.HttpResponse:
 
     try:
         response = requests.get(
-            "https://serpapi.com/search.json",
+            "https://serpapi.com/search.json",  # The URL for the SERPAPI hotel search endpoint
             params=params,
             timeout=30
         )
@@ -251,3 +252,288 @@ def _json_response(
         mimetype="application/json"
     )
 
+
+# Flight Part
+# FLIGHT SEARCH
+
+@app.route(
+    route="flights",
+    methods=["GET", "POST"],
+    auth_level=func.AuthLevel.ANONYMOUS
+)
+def flights(req: func.HttpRequest) -> func.HttpResponse:
+
+    try:
+        payload = (
+            req.get_json()
+            if req.method == "POST"
+            else dict(req.params)
+        )
+
+    except ValueError:
+        return _json_response(
+            {"error": "Request body must be valid JSON."},
+            400
+        )
+
+    validation_error = _validate_flight_payload(payload)
+
+    if validation_error:
+        return _json_response(
+            {"error": validation_error},
+            400
+        )
+
+    api_key = os.getenv("SERPAPI_API_KEY")
+
+    if not api_key:
+        logging.error("SERPAPI_API_KEY is not configured")
+
+        return _json_response(
+            {"error": "Flight search is not configured."},
+            500
+        )
+
+    cabin_map = {
+        "economy": 1,
+        "premium_economy": 2,
+        "business": 3,
+        "first": 4
+    }
+
+    params = {
+        "engine": "google_flights",
+        "departure_id": payload["origin"].strip(),
+        "arrival_id": payload["destination"].strip(),
+        "outbound_date": payload["departure_date"],
+        "adults": int(payload["adults"]),
+        "currency": "INR",
+        "gl": "in",
+        "travel_class": cabin_map.get(
+            payload["travel_class"],
+            1
+        ),
+        "api_key": api_key
+    }
+
+    if payload["trip_type"] == "round_trip":
+
+        params["type"] = 1
+        params["return_date"] = payload["return_date"]
+
+    else:
+
+        params["type"] = 2
+
+    try:
+
+        response = requests.get(
+            "https://serpapi.com/search.json",
+            params=params,
+            timeout=30
+        )
+
+        response.raise_for_status()
+
+        data = response.json()
+
+        flights_data = [
+            _normalize_flight(flight, data)
+            for flight in data.get("best_flights", [])
+        ]
+
+    except requests.RequestException:
+
+        logging.exception(
+            "SERPAPI flight request failed"
+        )
+
+        return _json_response(
+            {"error": "Flight provider is unavailable."},
+            502
+        )
+
+    except (TypeError, ValueError, KeyError):
+
+        logging.exception(
+            "SERPAPI returned an invalid flight response"
+        )
+
+        return _json_response(
+            {"error": "Flight provider returned invalid data."},
+            502
+        )
+
+    return _json_response(
+        {
+            "origin": params["departure_id"],
+            "destination": params["arrival_id"],
+            "flights": flights_data
+        }
+    )
+
+# Validation function for flight payload
+def _validate_flight_payload(payload:dict)-> str| None:
+
+    required = (
+        "origin",
+        "destination",
+        "departure_date",
+        "adults",
+        "travel_class",
+        "trip_type"
+    )
+
+    missing = [
+        field
+        for field in required
+        if field not in payload or payload[field] in (None, "")
+    ]
+
+    if missing:
+        return (
+            f"Missing required fields: {', '.join(missing)}."
+        )
+
+    if not isinstance(payload["origin"], str):
+        return "origin must be valid airport code."
+
+    if not isinstance(payload["destination"], str):
+        return "destination must be a valid airport code."
+
+    try:
+
+        departure_date = date.fromisoformat(
+            str(payload["departure_date"])
+        )
+
+        adults = int(payload["adults"])
+
+    except (TypeError, ValueError):
+
+        return (
+            "departure_date must use YYYY-MM-DD "
+            "and adults must be an integer."
+        )
+
+    if departure_date < date.today():
+        return "departure_date cannot be in the past."
+
+    if not 1 <= adults <= 10:
+        return "adults must be between 1 and 10."
+
+    valid_classes = {
+        "economy",
+        "premium_economy",
+        "business",
+        "first"
+    }
+
+    if payload["travel_class"] not in valid_classes:
+        return "Invalid travel_class."
+
+    valid_trip_types = {
+        "one_way",
+        "round_trip"
+    }
+
+    if payload["trip_type"] not in valid_trip_types:
+        return "Invalid trip_type."
+
+    if payload["trip_type"] == "round_trip":
+
+        if not payload.get("return_date"):
+            return "return_date is required for round_trip."
+
+        try:
+
+            return_date = date.fromisoformat(
+                str(payload["return_date"])
+            )
+
+        except (TypeError, ValueError):
+
+            return "return_date must use YYYY-MM-DD."
+
+        if return_date <= departure_date:
+            return "return_date must be after departure_date."
+
+    return None
+
+def _normalize_flight(
+    flight: dict,
+    data: dict
+) -> dict:
+
+    segments = flight.get("flights") or []
+
+    if not segments:
+        return {}
+
+    first_flight = segments[0]
+    last_flight = segments[-1]
+
+    departure_airport = (
+        first_flight.get("departure_airport") or {}
+    )
+
+    arrival_airport = (
+        last_flight.get("arrival_airport") or {}
+    )
+
+    search_parameters = (
+        data.get("search_parameters") or {}
+    )
+
+    return {
+        "airline": first_flight.get("airline"),
+
+        "flight_number": first_flight.get(
+            "flight_number"
+        ),
+
+        "departure_airport": departure_airport.get(
+            "name"
+        ),
+
+        "departure_city": departure_airport.get(
+            "id"
+        ),
+
+        "arrival_airport": arrival_airport.get(
+            "name"
+        ),
+
+        "arrival_city": arrival_airport.get(
+            "id"
+        ),
+
+        "stopover_airports": None,
+
+        "departure_time": departure_airport.get(
+            "time"
+        ),
+
+        "arrival_time": arrival_airport.get(
+            "time"
+        ),
+
+        "duration_minutes": flight.get(
+            "total_duration"
+        ),
+
+        "cabin_class": first_flight.get(
+            "travel_class"
+        ),
+
+        "price": flight.get(
+            "price"
+        ),
+
+        "currency": search_parameters.get(
+            "currency",
+            "INR"
+        ),
+
+        "api_source": "SERPAPI"
+    }
