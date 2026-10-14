@@ -52,3 +52,4 @@ class Config:
     AIRPORT_API_URL = os.getenv("AIRPORT_API_URL", "")
     HOTEL_API_URL = os.getenv("HOTEL_API_URL", "")
     FLIGHT_API_URL = os.getenv("FLIGHT_API_URL", "")
+    WEATHER_API_URL =os.getenv("WEATHER_API_URL", "")

@@ -253,7 +253,8 @@ def _json_response(
     )
 
 
-# Flight Part
+#=========== Flight Part =============# 
+
 # FLIGHT SEARCH
 
 @app.route(
@@ -537,3 +538,165 @@ def _normalize_flight(
 
         "api_source": "SERPAPI"
     }
+
+# ====== Weather Part ====== #
+
+@app.route(
+    route="weather",
+    methods=["GET", "POST"],
+    auth_level = func.AuthLevel.ANONYMOUS
+)
+
+def weather(req: func.HttpRequest) -> func.HttpResponse:
+
+    destination = req.params.get("destination", "").strip()
+
+    if len(destination) <2:
+        return _json_response(
+            {"error": "destination must contain at least 2 characters."},
+            400
+        )
+
+    # step1 :  Get geographical coordinates
+    try:
+        geo_response = requests.get(
+            "https://geocoding-api.open-meteo.com/v1/search",
+            params={   # conver the city with there coordinate for Open Metro
+                "name": destination,
+                "count":1,
+                "format":"json"
+            },
+            timeout=30
+        )
+        geo_response.raise_for_status()
+        geo_data = geo_response.json()
+
+    except requests.RequestException:
+        logging.execution("Open-Meteo geocoding request failed")
+
+        return _json_response(
+            {"error": "Weather provider is unavailable."},
+            502
+        )
+
+    except ValueError:
+        logging.exception(
+            "Open-Meteo geocoding returned an invalid response"
+        )
+
+        return _json_response(
+            {"error": "Weather provider returned invalid data."},
+            502
+        )
+
+    results = geo_data.get("results") or []
+
+    if not results:
+        return _json_response(
+            {"error": "No geographical data found for the destination."},
+            404
+        )
+
+    city = results[0]
+
+    latitude = city.get("latitude")
+    longitude = city.get("longitude")
+
+    if latitude is None or longitude is None:
+        return _json_response(
+            {"error": "Location coordinates are unavailable."},
+            502
+        )
+
+    # step2 : Get weather data 
+    try:
+        weather_response = requests.get(
+             "https://api.open-meteo.com/v1/forecast",
+             params={
+                   "latitude": latitude, # it send the longitude and latitude and receive the data information
+                   "longitude":longitude,
+                   "current": [
+                        "temperature_2m",
+                        "relative_humidity_2m",
+                        "apparent_temperature",
+                        "weather_code",
+                        "wind_speed_10m",
+                        "visibility"
+                    ],
+                  "daily": [
+                        "weather_code",
+                        "temperature_2m_max",
+                        "temperature_2m_min",
+                        "precipitation_probability_max"
+                    ],
+                    "forcast_days":5
+             },
+             timeout=30
+        )
+
+        weather_response.raise_for_status()
+        weather_data = weather_response.json()
+
+    except requests.RequestException:
+             logging.exception("Open-Meteo forecast request failed")
+
+             return _json_response(
+                {"error": "Weather forecast service is unavailable."},
+                502
+            )
+
+    # step3 : Normalize the weather data
+
+    current = weather_data.get("current") or {}
+    daily = weather_data.get("daily") or {}
+
+    current_weather = {
+        "destination": city.get("name"),
+        "country": city.get("country"),
+        "temperature": current.get("temperature_2m"),
+        "feels_like": current.get("apparent_temperature"),
+        "humidity": current.get("relative_humidity_2m"),
+        "wind_speed": current.get("wind_speed_10m"),
+        "visibility": current.get("visibility"),
+        "weather_code": current.get("weather_code")
+    } 
+
+    dates = daily.get("time") or []
+    max_temps = daily.get("temperature_2m_max") or []
+    min_temps = daily.get("temperature_2m_min") or []
+    weather_codes = daily.get("weather_code") or []
+
+    rain_probability = (
+        daily.get("precipitation_probability_max") or []
+    )
+
+    forecast = []
+
+    for i, forecast_date in enumerate(dates):
+
+        forecast.append({
+            "forecast_date": forecast_date,
+            "temp_max": (
+                max_temps[i] if i < len(max_temps) else None
+            ),
+            "temp_min": (
+                min_temps[i] if i < len(min_temps) else None
+            ),
+            "weather_code": (
+                weather_codes[i]
+                if i < len(weather_codes)
+                else None
+            ),
+            "rain_percent": (
+                rain_probability[i]
+                if i < len(rain_probability)
+                else None
+            )
+        })
+
+    return _json_response({
+        "current_weather": current_weather,
+        "forecast": forecast
+    })
+
+
